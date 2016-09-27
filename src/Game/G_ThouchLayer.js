@@ -34,11 +34,11 @@ var G_ThouchLayer = cc.Layer.extend({
             }, 20
         );
 
-        //this.initBgMusicBtn();//设置喇叭播放按钮位置
+        this.initBgMusicBtn();//设置喇叭播放按钮位置
 
-        //this.initBgMusicStopBtn();//设置喇叭禁止播放按钮位置
+        this.initBgMusicStopBtn();//设置喇叭禁止播放按钮位置
 
-        //this.initBgMusic(); //播放背景音乐
+        this.initBgMusic(); //播放背景音乐
 
         this.initBetOnObj();//初始化押注值：0
 
@@ -74,9 +74,10 @@ var G_ThouchLayer = cc.Layer.extend({
     initBgMusicBtn: function () {
         this.s_hornArea = new cc.MenuItemImage(res.s_horn,res.s_horn,this.BgMusicCallback,this);
         this.s_hornArea.attr({
-            x:this.WinSize.width-this.s_hornArea.width,
-            y:450
+            x:480,
+            y:860
         });
+        this.s_hornArea.setRotation(90);
         this._s_horn_menu = new cc.Menu(this.s_hornArea);
         this._s_horn_menu.x=0;
         this._s_horn_menu.y=0;
@@ -87,9 +88,10 @@ var G_ThouchLayer = cc.Layer.extend({
     initBgMusicStopBtn: function () {
         this.s_hornStopArea = new cc.MenuItemImage(res.s_stop_horn,res.s_stop_horn,this.BgMusicCallback,this);
         this.s_hornStopArea.attr({
-            x:this.WinSize.width-this.s_hornStopArea.width,
-            y:450
+            x:480,
+            y:860
         });
+        this.s_hornStopArea.setRotation(90);
         this._s_hornStop_menu = new cc.Menu(this.s_hornStopArea);
         this._s_hornStop_menu.x=0;
         this._s_hornStop_menu.y=0;
@@ -196,6 +198,7 @@ var G_ThouchLayer = cc.Layer.extend({
         if(this.checkYD(this.bet_on_obj.total+sender.bet_num)){
             this.show_xz.setVisible(true);
             this._start_menu.setVisible(true);
+            this.s_chipsArea.setVisible(true);
             this.bet_on_obj.total += sender.bet_num;    //累加每次投注的值
             this.show_xz.setString(this.bet_on_obj.total); //设置文本框中的文本
             this.UI_YD -= sender.bet_num;
@@ -209,9 +212,10 @@ var G_ThouchLayer = cc.Layer.extend({
     initChipsArea: function(){
         this.s_chipsArea = new cc.Sprite(res.s_chips);
         this.s_chipsArea.attr({
-            x:(this.WinSize.width)/2,
-            y:150
+            x:this.s_chipsArea.height/2+113,
+            y:this.WinSize.height-this.s_chipsArea.width/2-16
         });
+        this.s_chipsArea.setRotation(90);
         this.addChild(this.s_chipsArea);
         this.s_chipsArea.setVisible(false);
     },
@@ -383,11 +387,12 @@ var G_ThouchLayer = cc.Layer.extend({
         //押注图标从庄家移动到闲家
         this.playerChips  = new cc.Sprite(res.s_chips);
         this.playerChips.attr({
-            x:this.WinSize.width/2,
+            x:450,
             y:300
         });
+        this.playerChips.setRotation(90);
         this.addChild( this.playerChips );
-        var action1 = cc.moveTo(1,cc.p(this.WinSize.width/2, 150));
+        var action1 = cc.moveTo(1,cc.p(this.playerChips.height/2+113, this.WinSize.height-this.playerChips.width/2-16));
         var callback1 = cc.callFunc(this.playerAdd,this);
         var action2 = cc.fadeOut(0.5);
         var callback2 = cc.callFunc(this.playerFadeOut,this);
@@ -415,13 +420,14 @@ var G_ThouchLayer = cc.Layer.extend({
         //押注图标从闲家移动到庄家
         this.playerChipsTemp  = new cc.Sprite(res.s_chips);
         this.playerChipsTemp.attr({
-            x:this.WinSize.width/2,
-            y:150
+            x:this.playerChipsTemp.height/2+113,
+            y:this.WinSize.height-this.playerChipsTemp.width/2-16
         });
+        this.playerChipsTemp.setRotation(90);
         this.addChild( this.playerChipsTemp );
 
         var callback1 = cc.callFunc(this.bakerFadeOut,this);
-        var action1 = cc.moveTo(1,cc.p(this.WinSize.width/2, 300));
+        var action1 = cc.moveTo(1,cc.p(450, 300));
         var callback2 = cc.callFunc(this.bakerFadeOut2,this);
         var action2 = cc.fadeOut(1);
         var sequence = cc.sequence(callback1,action1,callback2,action2);
