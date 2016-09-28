@@ -312,11 +312,12 @@ var G_ThouchLayer = cc.Layer.extend({
                         self.resultAreaHide();
                         self.poker_value  = new cc.Sprite(res.s_bg_poker);
                         self.poker_value.attr({
-                            x:550,
-                            y:400
+                            x:self.WinSize.width/2,
+                            y:265
                         });
+                        self.poker_value.setRotation(92);
                         self.addChild( self.poker_value );
-                        var action1 = cc.moveTo(0.5,cc.p(self.WinSize.width/2, self.poker_value.height/2));
+                        var action1 = cc.moveTo(0.5,cc.p(185, self.WinSize.height/2));
                         var callback = cc.callFunc(self.showCallBack,self);
                         var sequence = cc.sequence(action1,callback);
                         self.poker_value.runAction(sequence);
@@ -352,11 +353,14 @@ var G_ThouchLayer = cc.Layer.extend({
         //给庄家发背面牌
         this.poker_value2  = new cc.Sprite(res.s_bg_poker);
         this.poker_value2.attr({
-            x:550,
-            y:400
+            x:this.WinSize.width/2,
+            y:265
         });
+        this.poker_value2.setScale(0.6,0.6);//设置精灵的缩放比例
+        this.poker_value2.setRotation(90);
         this.addChild( this.poker_value2 );
-        var action2 = cc.moveTo(0.5,cc.p(this.WinSize.width/2, 265));
+        var action2 = cc.moveTo(0.5,cc.p(400, this.WinSize.height/2));
+        //var action3 = cc.scaleTo(1,0.6);
         var sequence2 = cc.sequence(action2);
         this.poker_value2.runAction(sequence2);
     },
@@ -423,6 +427,7 @@ var G_ThouchLayer = cc.Layer.extend({
             x:this.playerChipsTemp.height/2+113,
             y:this.WinSize.height-this.playerChipsTemp.width/2-16
         });
+        this.playerChipsTemp.setScale(0.5,0.5);
         this.playerChipsTemp.setRotation(90);
         this.addChild( this.playerChipsTemp );
 

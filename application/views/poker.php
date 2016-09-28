@@ -23,15 +23,41 @@
 </head>
 <body style="padding:0; margin: 0; background: #000;">
 <script>
+    var font_type = "楷体";
     var wx_info = {openid:'<?=$wx_info["Openid"]?>',nickname:'<?=$wx_info["NickName"]?>',imgUrl:'<?=$wx_info["HeadImg"]?>',total_gold:<?=$wx_info["TotalGold"]?>,gamekey:'<?=$wx_info["gamekey"]?>',MusicSet:<?=$wx_info["MusicSet"]?>,EffectsSet:<?=$wx_info["EffectsSet"]?>};
+
+    var base_url = './index.php?c=poker<?=$this->game_sign?>';
+    (function () {
+        var nav = window.navigator;
+        var ua = nav.userAgent.toLowerCase();
+        var uaResult = /android (\d+(?:\.\d+)+)/i.exec(ua) || /android (\d+(?:\.\d+)+)/i.exec(nav.platform);
+        if (uaResult) {
+            var osVersion = parseInt(uaResult[1]) || 0;
+            var browserCheck = ua.match(/(qzone|micromessenger|qqbrowser)/i);
+            if (browserCheck) {
+                var gameCanvas = document.getElementById("gameCanvas");
+                var ctx = gameCanvas.getContext('2d');
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(0, 0, 1, 1);
+            }
+        }
+    })();
+
 </script>
-<script>
-    var other_player_info = {openid:'<?=$other_player["Openid"]?>',nickname:'<?=$other_player["NickName"]?>',imgUrl:'<?=$other_player["HeadImg"]?>',total_gold:<?=$other_player["TotalGold"]?>,gamekey:'<?=$other_player["gamekey"]?>',MusicSet:<?=$other_player["MusicSet"]?>,EffectsSet:<?=$other_player["EffectsSet"]?>};
-</script>
-<!--<script src="http://192.168.1.217:3000/socket.io/socket.io.js"></script>-->
+
+
+
+
 <script src="res/loading.js"></script>
 <canvas id="gameCanvas" width="320" height="480"></canvas>
+<script src="http://192.168.1.217:3008/socket.io/socket.io.js"></script>
 <script src="frameworks/cocos2d-html5/CCBoot.js"></script>
 <script cocos src="main.js"></script>
+<script type="text/javascript">
+    var playerType = '';//player1是闲家
+    var room_id = 0;
+    var socket = io.connect('ws://192.168.1.217:3008');//h5game.gxziyun.com
+</script>
+
 </body>
 </html>

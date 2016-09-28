@@ -6,19 +6,48 @@ class poker extends CI_Controller
 {
 
     public $ActiveID = 0;
-    public $ChannelID = 1;
-    public $RoomID = 6;
+    public $ChannelID = 0;
+    public $RoomID = 0;
+
+    function __construct()
+    {
+        parent::__construct();
+        $this->ActiveID = $this->input->get('ActiveID') ? $this->input->get('ActiveID') : $this->input->get('AID');
+        $this->ChannelID = $this->input->get('ChannelID') ? $this->input->get('ChannelID') : $this->input->get('CID');
+        $this->RoomID = $this->input->get('RoomID') ? $this->input->get('RoomID') : $this->input->get('RID');
+
+        $this->ActiveID = intval($this->ActiveID);
+        $this->ChannelID = intval($this->ChannelID);
+        $this->RoomID = intval($this->RoomID);
+
+        if ($this->ActiveID && !$this->ChannelID) {
+            $this->content_model->set_table('zy_active_main');
+            $row = $this->content_model->get_one($this->ActiveID, 'ActiveID');
+            $this->ChannelID = $row['ChannelID'];
+            $this->RoomID = $row['RoomID'];
+        }
+        $this->game_sign = "&AID=$this->ActiveID&CID=$this->ChannelID&RID=$this->RoomID";
+        $this->game_sign_sql = addslashes("  ActiveID=$this->ActiveID AND ChannelID=$this->ChannelID AND RoomID=$this->RoomID");
+        // $this->load->model('my_common_model', 'common');
+        // $this->load->model('lb_model');
+
+
+    }
 
 	function index() {
 	    $data = array();
 	    if(isset($_GET['test'])){
-            $openid_arr = array('lkl','quwer','messi');
-            $NickName_arr = array('测试','流星雨','百合花');
-            $key = array_rand($openid_arr);
+            $test = $_GET['test'];
+            if($test=="a"){
+                $HeadImg = './res/oREekjljkTwZVmxiNYUHMkDxQjPc.jpg';
+            }else{
+                $HeadImg = './res/b.jpg';
+            }
 	        $data['wx_info'] = array(
-	            'Openid' => $openid_arr[$key],
-	            'NickName' => $NickName_arr[$key],
-	            'HeadImg' => './res/oREekjljkTwZVmxiNYUHMkDxQjPc.jpg'
+	            'Openid' => "user-".$test,
+	            'NickName' => "用户".$test,
+
+	            'HeadImg' => $HeadImg
 	        );
 	    }else{
 	        $data['wx_info'] = array(
@@ -57,24 +86,6 @@ class poker extends CI_Controller
         $data['wx_info']['EffectsSet'] = $ms['EffectsSet'];
         $data['wx_info']['TotalGold'] = $Udata['TotalGold'];
 		$data['wx_info']['gamekey'] = $gamekey;
-        //检查前10秒是否有用户刚刚进入游戏，存在则匹配，不存在则先把对面玩家信息置空
-        $cur_time = time();
-        $use_time = $cur_time-10;
-        $Openid = $data['wx_info']['Openid'];
-        $sql = "select * from zy_player WHERE UpdateTime>$use_time AND Openid!='$Openid' ";
-        $query = $this->db->query($sql);
-        $result = $query->row_array();
-        if($result){
-            $data['other_player'] = $result;
-        }else{
-            $data['other_player']['Openid'] = '123';
-            $data['other_player']['NickName'] = '123';
-            $data['other_player']['HeadImg'] = './res/oREekjljkTwZVmxiNYUHMkDxQjPc.jpg';
-            $data['other_player']['MusicSet'] = 1;
-            $data['other_player']['EffectsSet'] = 1;
-            $data['other_player']['TotalGold'] = 9000;
-            $data['other_player']['gamekey'] = $gamekey;
-        }
 
 		$this->load->view('poker',$data);
 	}
@@ -617,8 +628,10 @@ class poker extends CI_Controller
         $this->game_sign_sql = addslashes("  ActiveID=$this->ActiveID AND ChannelID=$this->ChannelID AND RoomID=$this->RoomID");
         $xlb_ids = $this->input->get('ids');
         // $where['ActiveID'] = $this->ActiveID;
-        $where['ChannelID'] = $this->ChannelID;
-        $where['RoomID'] = $this->RoomID;
+        //$where['ChannelID'] = $this->ChannelID;
+        $where['ChannelID'] = 1;
+        //$where['RoomID'] = $this->RoomID;
+        $where['RoomID'] = 6;
         $this->db->order_by("addtime", "desc");
         $query = $this->db->get_where('zy_game_xlb', $where, 5);
         $result = $query->result_array();

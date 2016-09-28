@@ -12,7 +12,7 @@ if (! defined('BASEPATH'))
  * |
  */
 define('TITLE','摇骰子');
-$config['base_url'] = 'http://192.168.1.217/poker';
+$config['base_url'] = 'http://192.168.1.217/poker_game';
 
 /*
  * |-------------------------------------------------------------------------- |

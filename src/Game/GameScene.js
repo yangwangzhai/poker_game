@@ -12,7 +12,7 @@ var GameLayer = cc.Layer.extend({
 
         //加载背景图片；以及加载微信头像、微信昵称、我的烟豆、赚取烟豆
         this.addBackGround();
-        this.scheduleOnce(this.addThouchLayer,0);
+        this.addThouchLayer();
 
         return true;
     },

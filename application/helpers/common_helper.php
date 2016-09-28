@@ -1113,4 +1113,50 @@ function phpqrcode($text, $filename){
   QRcode::png($value, 'ewm/'.$filename, $errorCorrectionLevel, $matrixPointSize, 2, true);   
 }
 
+    /**
+     * 生成缩略图函数  剪切
+     *
+     * @param $imgurl 图片路径
+     * @param $width 缩略图宽度
+     * @param $height 缩略图高度
+     * @return string 生成图片的路径 类似：./uploads/201203/img_100_80.jpg
+     */
+    function thumb_wx($imgurl, $width = 100, $height = 100)
+    {
+        if (empty($imgurl))
+            return '不能为空';
+
+        include_once 'application/libraries/image_moo.php';
+        $moo = new Image_moo();
+        $moo->load($imgurl);
+        $moo->resize_crop($width, $height);
+        $moo->save_pa('', '', true);
+    }
+
+
+    /*
+    *@通过curl方式获取指定的图片到本地
+    *@ 完整的图片地址
+    *@ 要存储的文件名
+    */
+    function getImg($url = "", $filename = "", $width = 84, $height = 84)
+    {
+        //去除URL连接上面可能的引号
+        //$url = preg_replace( '/(?:^['"]+|['"/]+$)/', '', $url );
+		if(!strstr($url,"wx.qlogo.cn"))  return '';
+        $hander = curl_init();
+        $fp = fopen($filename, 'wb');
+        curl_setopt($hander, CURLOPT_URL, $url);
+        curl_setopt($hander, CURLOPT_FILE, $fp);
+        curl_setopt($hander, CURLOPT_HEADER, 0);
+        curl_setopt($hander, CURLOPT_FOLLOWLOCATION, 1);
+        //curl_setopt($hander,CURLOPT_RETURNTRANSFER,false);//以数据流的方式返回数据,当为false是直接显示出来
+        curl_setopt($hander, CURLOPT_TIMEOUT, 60);
+        curl_exec($hander);
+        curl_close($hander);
+        fclose($fp);
+        thumb_wx($filename, $width, $height);
+        return $filename;
+    }
+
 
