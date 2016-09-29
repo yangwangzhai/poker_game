@@ -8,7 +8,7 @@ class poker extends CI_Controller
     public $ActiveID = 0;
     public $ChannelID = 0;
     public $RoomID = 0;
-
+    private $nodekey = 'wx263e9fc25c21324f';
     function __construct()
     {
         parent::__construct();
@@ -40,13 +40,14 @@ class poker extends CI_Controller
             $test = $_GET['test'];
             if($test=="a"){
                 $HeadImg = './res/oREekjljkTwZVmxiNYUHMkDxQjPc.jpg';
-            }else{
+            }elseif($test=="b"){
                 $HeadImg = './res/b.jpg';
+            }elseif($test=="c"){
+                $HeadImg = './res/c.jpg';
             }
 	        $data['wx_info'] = array(
 	            'Openid' => "user-".$test,
 	            'NickName' => "用户".$test,
-
 	            'HeadImg' => $HeadImg
 	        );
 	    }else{
@@ -175,8 +176,8 @@ class poker extends CI_Controller
                     }
                     $BetOndata['AddTime'] = time();
                     $this->db->insert('zy_bet_on',$BetOndata);
-
-                    $result = array('Code'=>0,'Msg'=>'成功','p_1'=>$p_1,'p_2'=>$p_2,'b_1'=>$b_1,'b_2'=>$b_2,'winner'=>$winner,'bets'=>$sum,'My_YD'=>$My_YD);
+                    $key = md5($openid . $sum . $this->nodekey);
+                    $result = array('Code'=>0,'Msg'=>'成功','p_1'=>$p_1,'p_2'=>$p_2,'b_1'=>$b_1,'b_2'=>$b_2,'winner'=>$winner,'bets'=>$sum,'My_YD'=>$My_YD,'key'=>$key);
             }
         }else{
             $result = array('Code'=>-1,'Msg'=>'数据异常');
@@ -668,6 +669,14 @@ class poker extends CI_Controller
 
     }
 
+    //异步获取下注的值
+    function save_result(){
+        $openid = $this->input->post('openid');
+        $score = $this->input->post('score');
+        $data['score'] = $score;
+        $data['key'] = md5($openid . $score . $this->nodekey);
+        echo json_encode($data);
+    }
 
 
 

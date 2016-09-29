@@ -27,6 +27,7 @@
     var wx_info = {openid:'<?=$wx_info["Openid"]?>',nickname:'<?=$wx_info["NickName"]?>',imgUrl:'<?=$wx_info["HeadImg"]?>',total_gold:<?=$wx_info["TotalGold"]?>,gamekey:'<?=$wx_info["gamekey"]?>',MusicSet:<?=$wx_info["MusicSet"]?>,EffectsSet:<?=$wx_info["EffectsSet"]?>};
 
     var base_url = './index.php?c=poker<?=$this->game_sign?>';
+
     (function () {
         var nav = window.navigator;
         var ua = nav.userAgent.toLowerCase();

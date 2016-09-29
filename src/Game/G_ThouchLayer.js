@@ -25,9 +25,26 @@ var G_ThouchLayer = cc.Layer.extend({
         this.UI_YD = wx_info.total_gold;
         this.MusicSet = wx_info.MusicSet;
         this.EffectsSet = wx_info.EffectsSet;
+        var self = this;
+        cc.spriteFrameCache.addSpriteFrames(res.s_card_plist);
+        cc.log("游戏类型为："+PlayerType);
+
+        //接收下注信息
+        socket.on('updatescroce', function(obj) {
+            if(obj.openid!=wx_info.openid){
+                self.changeOtherXz(obj);
+            }
+        });
+
+        //接收结果和具体牌面
+        socket.on('otherPlayerGetPoker', function(obj) {
+            if(obj.openid!=wx_info.openid){
+                self.showOtherPoker(obj);
+            }
+        });
+
 
         //喇叭公告
-        var self = this;
         setXlbText(this);
         this.schedule(function noting() {
                 setXlbText(self);
@@ -46,7 +63,7 @@ var G_ThouchLayer = cc.Layer.extend({
 
         this.initChipsArea(); //设置已押注的图标（点击下注前，隐藏）
 
-        this.initXzArea();//设置下注数值（点击下注前，隐藏）
+        this.initXzArea();//设置下注数值
 
         this.initStartArea();//设置开始按钮位置（点击下注前，隐藏）
 
@@ -54,9 +71,22 @@ var G_ThouchLayer = cc.Layer.extend({
 
         this.initReadyArea();//设置准备按钮位置（点击下注前，隐藏）
 
-        //this.schedule(this.updateShow, 0.5);    //定时函数，每0.5秒执行一次updateShow函数
+        this.initOtherXzArea();//设置对方的下注值位置
+
+        this.schedule(this.chooseBaker, 1 ,10, 1);    //定时函数，每1秒执行一次chooseBaker函数
 
         return true;
+    },
+
+    //选择谁是庄家
+    chooseBaker:function(){
+        if(PlayerType!=null){
+            if(PlayerType=="player2"){
+                //是庄家
+                this._bet_menu.setVisible(false);
+            }
+            this.unschedule(this.chooseBaker);
+        }
     },
 
     //播放背景音乐
@@ -126,7 +156,8 @@ var G_ThouchLayer = cc.Layer.extend({
                         alert(response.Msg);
                     }
                 }else {
-                    alert('网络故障，请稍后再试试~');
+                    var tipUI = new TipUI("网络故障，请稍后再试试~");
+                    this.addChild(tipUI,100);
                 }
             }
         };
@@ -188,13 +219,12 @@ var G_ThouchLayer = cc.Layer.extend({
             x: 0,
             y: 0
         });
-
         this.addChild(this._bet_menu);
+
     },
     //投注之后回调函数：依次累加每次投注的值
     betCallBack: function (sender){
         var effect_ya = cc.audioEngine.playEffect(res.s_ya,false);
-        //cc.audioEngine.stopEffect(effect_ya);
         if(this.checkYD(this.bet_on_obj.total+sender.bet_num)){
             this.show_xz.setVisible(true);
             this._start_menu.setVisible(true);
@@ -202,9 +232,23 @@ var G_ThouchLayer = cc.Layer.extend({
             this.bet_on_obj.total += sender.bet_num;    //累加每次投注的值
             this.show_xz.setString(this.bet_on_obj.total); //设置文本框中的文本
             this.UI_YD -= sender.bet_num;
-            BG_Object._mybean.setString('我的龙币：'+this.UI_YD); //设置文本框中的文本
+            BG_Object._mybean.setString(this.UI_YD); //设置文本框中的文本
+
+            xhr.open("POST", base_url + "&m=save_result");
+            xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status <= 207)) {
+                    var httpStatus = xhr.statusText;
+                    var responseObj = {sum: 0, game_id: 0, status: 0};
+                    responseObj = eval('(' + xhr.responseText + ')');
+                    socket.emit('savescroce', {score:responseObj.score, openid:wx_info.openid, key:responseObj.key });
+                }
+            };
+            var data = this.postData2(this.bet_on_obj.total);//转换格式
+            xhr.send(data);
         }else{
-            alert('龙币不足！');
+            var tipUI = new TipUI("龙币不足！");
+            this.addChild(tipUI,100);
         }
     },
 
@@ -296,9 +340,7 @@ var G_ThouchLayer = cc.Layer.extend({
     beginCallback:function(){
         var effect_send = cc.audioEngine.playEffect(res.s_send,false);
         var self=this;
-        cc.spriteFrameCache.addSpriteFrames(res.s_card_plist);
         //异步
-        var xhr = cc.loader.getXMLHttpRequest();
         xhr.open("POST", "index.php?c=poker&m=main");
         //set Content-type "text/plain;charset=UTF-8" to post plain text
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
@@ -307,6 +349,8 @@ var G_ThouchLayer = cc.Layer.extend({
                 if (xhr.status >= 200 && xhr.status <= 207) {
                     var response = eval("("+xhr.responseText+")");//接收服务器返回结果
                     self.player_num =response ; //玩家、庄家的牌数赋值给全景变量
+                    //将结果和具体牌面发给对手
+                    socket.emit('sendPokerNum', {score:response.bets,winner:response.winner, openid:wx_info.openid, p_1:response.p_1,p_2:response.p_2, b_1:response.b_1,b_2:response.b_2,key:response.key});
                     if(response.Code == 0){
                         //给闲家发背面牌
                         self.resultAreaHide();
@@ -349,7 +393,6 @@ var G_ThouchLayer = cc.Layer.extend({
 
     //放置一张扑克牌（正面）隐藏
     showCallBack:function(node){
-        //this.poker_value.initWithFile("#A_8.png");
         //给庄家发背面牌
         this.poker_value2  = new cc.Sprite(res.s_bg_poker);
         this.poker_value2.attr({
@@ -484,14 +527,153 @@ var G_ThouchLayer = cc.Layer.extend({
         return params;
     },
 
+    postData2: function(data){
+        var params = "openid="+wx_info.openid+"&gamekey="+wx_info.gamekey+"&score="+data;
+        return params;
+    },
+
     //播放音效
     playEffect : function() {
         if(AllowMusic){
             cc.audioEngine.playEffect(res.s_yao,true);
         }
+    },
+
+    //对方总的押注数值
+    initOtherXzArea:function(){
+        var fontColor = new cc.Color(255, 255, 0);  //实列化颜色对象
+        this.other_show_xz = new cc.LabelTTF('0', 'Arial', 20);
+        this.other_show_xz.attr({
+            x: this.WinSize.width-90,
+            y: this.WinSize.height-30,
+            anchorX: 0.5,
+            anchorY: 0.5
+        });
+        this.other_show_xz.setRotation(90);
+        this.other_show_xz.setColor(fontColor);
+        this.addChild(this.other_show_xz);
+    },
+
+    changeOtherXz:function(obj){
+        cc.log(obj.score);
+        var value = Number(obj.score);
+        this.other_show_xz.setString( value );
+    },
+
+    showOtherPoker:function(obj){
+        //给庄家发背景牌
+        this.player_num = obj;
+        var self = this;
+        self.resultAreaHide();
+        self.poker_value  = new cc.Sprite(res.s_bg_poker);
+        self.poker_value.attr({
+            x:self.WinSize.width/2,
+            y:265
+        });
+        self.poker_value.setRotation(92);
+        self.addChild( self.poker_value );
+        var action1 = cc.moveTo(0.5,cc.p(185, self.WinSize.height/2));
+        var callback = cc.callFunc(self.showCallBack,self);
+        var sequence = cc.sequence(action1,callback);
+        self.poker_value.runAction(sequence);
+        self.s_show_downArea.setVisible(true);
+        //庄家翻牌
+        self.scheduleOnce(function(){
+            var b1 = obj.b_1;
+            var b2 = obj.b_2;
+            var player_poker = new cc.Sprite('#'+b1+'_'+b2+'.png');
+            player_poker.attr({
+                x : self.poker_value.width/2,
+                y : self.poker_value.height/2
+            });
+            self.poker_value.addChild(player_poker);
+            self.initShowOtherDownArea();
+        },0.5);
+
+
+    },
+
+    //“摊牌”
+    initShowOtherDownArea:function(){
+        this.s_show_downArea = new cc.MenuItemImage(res.s_btn_show,res.s_btn_show,this.resultOtherCallback,this);
+        this.s_show_downArea.attr({
+            x:175,
+            y:210
+        });
+        this.s_show_downArea.setRotation(90);
+        this._s_show_down_menu = new cc.Menu(this.s_show_downArea);
+        this._s_show_down_menu.x=0;
+        this._s_show_down_menu.y=0;
+        this.addChild(this._s_show_down_menu);
+    },
+
+    //点击“摊牌”按钮后的回调函数：摊开庄家的底牌。。。
+    resultOtherCallback:function(){
+        var p1 = this.player_num.p_1;
+        var p2 = this.player_num.p_2;
+        var baker_poker = new cc.Sprite('#'+p1+'_'+p2+'.png');
+        baker_poker.attr({
+            x :  this.poker_value2.width/2,
+            y :  this.poker_value2.height/2
+        });
+        this.poker_value2.addChild(baker_poker);
+        //判断谁赢
+        if(this.player_num.winner=='baker'){
+            var effect_player_win = cc.audioEngine.playEffect(res.s_player_win,false);
+            this.otherplayerWin();
+        }else{
+            var effect_baker_win = cc.audioEngine.playEffect(res.s_baker_win,false);
+            this.otherbankerWin();
+        }
+        this.s_show_downArea.setVisible(false);
+    },
+
+    otherplayerWin:function(){
+        //押注图标从庄家移动到闲家
+        this.playerChips  = new cc.Sprite(res.s_chips);
+        this.playerChips.attr({
+            x:450,
+            y:300
+        });
+        this.playerChips.setRotation(90);
+        this.addChild( this.playerChips );
+        var action1 = cc.moveTo(1,cc.p(this.playerChips.height/2+113, this.WinSize.height-this.playerChips.width/2-16));
+        var callback1 = cc.callFunc(this.playerAdd,this);
+        var action2 = cc.fadeOut(0.5);
+        var callback2 = cc.callFunc(this.otherplayerFadeOut,this);
+        var sequence = cc.sequence(action1,callback1,action2,callback2);
+        this.playerChips.runAction(sequence);
+    },
+
+    otherplayerFadeOut:function(){
+        this.s_chipsArea.setVisible(false);
+        this.show_xz.setVisible(false);
+        this._start_menu.setVisible(true);
+    },
+
+
+    otherbankerWin:function(){
+        //押注图标从闲家移动到庄家
+        this.playerChipsTemp  = new cc.Sprite(res.s_chips);
+        this.playerChipsTemp.attr({
+            x:this.playerChipsTemp.height/2+113,
+            y:this.WinSize.height-this.playerChipsTemp.width/2-16
+        });
+        this.playerChipsTemp.setScale(0.5,0.5);
+        this.playerChipsTemp.setRotation(90);
+        this.addChild( this.playerChipsTemp );
+
+        var callback1 = cc.callFunc(this.bakerFadeOut,this);
+        var action1 = cc.moveTo(1,cc.p(450, 300));
+        var callback2 = cc.callFunc(this.otherbakerFadeOut,this);
+        var action2 = cc.fadeOut(1);
+        var sequence = cc.sequence(callback1,action1,callback2,action2);
+        this.playerChipsTemp.runAction(sequence);
+    },
+
+    otherbakerFadeOut:function(){
+        this._start_menu.setVisible(true);
     }
-
-
 
 });
 

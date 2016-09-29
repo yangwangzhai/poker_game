@@ -18,6 +18,7 @@
         "src/Game/GameScene.js",
         "src/Game/G_BackGroundLayer.js",
         "src/Game/G_ThouchLayer.js",
-        "src/TwoPlayer.js"
+        "src/TwoPlayer.js",
+        "src/TipScene.js"
     ]
 }

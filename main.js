@@ -51,7 +51,7 @@ var AllowMusic = false;
 cc.game.onStart = function(){
     if(!cc.sys.isNative && document.getElementById("cocosLoading")) //If referenced loading.js, please remove it
         document.body.removeChild(document.getElementById("cocosLoading"));
-
+    var xhr = cc.loader.getXMLHttpRequest();
        cc.view.adjustViewPort(true);
     // Setup the resolution policy and design resolution size
    // cc.view.setDesignResolutionSize(320, 480, cc.ResolutionPolicy.SHOW_ALL);

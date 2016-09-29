@@ -9,6 +9,7 @@
  */
 
 var BG_Object = null;
+var PlayerType = null;
 var G_BackGroundLayer = cc.Layer.extend({
     sprite:null,
     _Avatar : null,
@@ -33,6 +34,8 @@ var G_BackGroundLayer = cc.Layer.extend({
         socket.on('enter', function(obj) {
             cc.log(obj);
             room_id = obj.room_id;
+            PlayerType = obj.playerType;
+            cc.log(PlayerType);
         });
 
         //接收
@@ -47,14 +50,6 @@ var G_BackGroundLayer = cc.Layer.extend({
         //接收另一个人的信息
         socket.on('sendMyself', function(obj) {
             self.changeOtherPlayer(obj);
-        });
-
-        //接收下注信息
-
-        socket.on('updatescroce', function(obj) {
-            self.NumLabel.value = self.NumLabel.value + Number(obj.score);
-            self.NumLabel.setString( self.NumLabel.value );
-
         });
 
         //加载背景图片
@@ -80,7 +75,7 @@ var G_BackGroundLayer = cc.Layer.extend({
 
     },
 
-    //加载微信头像、微信昵称、我的烟豆、赚取烟豆
+    //加载自己的微信头像、微信昵称、我的烟豆、赚取烟豆
     initHeader : function() {
         /*this._Header_bg = new cc.DrawNode();
         var ltp = cc.p(0, this.WinSize.height);
@@ -100,7 +95,7 @@ var G_BackGroundLayer = cc.Layer.extend({
             });
             self._Avatar.setPosition(this._Avatar.width/2+16,this.WinSize.height-this._Avatar.height/2-16);  //设置微信头像的位置
             self._Avatar.setRotation(90);
-            //self.addChild(self._Avatar);
+            self.addChild(self._Avatar);
 
         }.bind(this));
 
@@ -136,14 +131,6 @@ var G_BackGroundLayer = cc.Layer.extend({
 
     },
 
-    get_other_player:function(){
-        if(other_player_info.openid){   //
-            this.initPlayerHeader();
-        }else{
-
-        }
-    },
-
     //加载对手玩家微信头像、微信昵称、我的烟豆、赚取烟豆
     initPlayerHeader : function(obj) {
         var self = this;
@@ -151,26 +138,27 @@ var G_BackGroundLayer = cc.Layer.extend({
         cc.loader.loadImg(obj.imgUrl, {isCrossOrigin : false }, function(err, img)
         {
             self.headsprite = new cc.Sprite(img);
-            self.headsprite.x = this.WinSize.width/2;
-            self.headsprite.y = this.WinSize.height/2;
+            self.headsprite.x = this.WinSize.width-self.headsprite.width/2;
+            self.headsprite.y = this.WinSize.height-250;
             self.headsprite.setAnchorPoint(0.5, 0.5);
+            self.headsprite.setRotation(90);
             self.addChild(self.headsprite, 21);
         }.bind(this));
 
         var my_info_font_size = 24;
         //昵称
         this.nickname2 = new cc.LabelTTF('昵称：'+obj.nickname, font_type, 22, cc.size(140,22));
-        this.nickname2.x = this.WinSize.width/2;
-        this.nickname2.y = this.WinSize.height/2-53;
+        this.nickname2.x = this.WinSize.width-120;
+        this.nickname2.y = this.WinSize.height-190;
         this.nickname2.setAnchorPoint(0,0.5);
-        this.nickname2.setColor(cc.color(255, 255, 255));
+        this.nickname2.setColor(cc.color(0, 250, 154));
         this.nickname2.setRotation(90);
         this.addChild(this.nickname2, 10);
 
         //龙币数
-        this.scoreLabel2 = new cc.LabelTTF('我的龙币：'+obj.total_gold.toString(), "Arial", my_info_font_size);
-        this.scoreLabel2.x = this.WinSize.width/2-30;
-        this.scoreLabel2.y = this.WinSize.height/2-53;
+        this.scoreLabel2 = new cc.LabelTTF(obj.total_gold.toString(), "Arial", my_info_font_size);
+        this.scoreLabel2.x = this.WinSize.width-45;
+        this.scoreLabel2.y = this.WinSize.height-30;
         this.scoreLabel2.value = obj.total_gold,
         this.scoreLabel2.setAnchorPoint(0,1);
         this.scoreLabel2.setRotation(90);
@@ -183,9 +171,10 @@ var G_BackGroundLayer = cc.Layer.extend({
         cc.loader.loadImg(obj.headimgurl, {isCrossOrigin : false }, function(err, img) {
             self.removeChild(self.headsprite);
             self.headsprite = new cc.Sprite(img);
-            self.headsprite.x = this.WinSize.width/2;
-            self.headsprite.y = this.WinSize.height/2;
+            self.headsprite.x = this.WinSize.width-self.headsprite.width/2;
+            self.headsprite.y = this.WinSize.height-250;
             self.headsprite.setAnchorPoint(0.5, 0.5);
+            self.headsprite.setRotation(90);
             self.addChild(self.headsprite, 21);
         }.bind(this));
 

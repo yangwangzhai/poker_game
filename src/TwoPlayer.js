@@ -48,7 +48,6 @@ var TwoPlayerLayer = cc.Layer.extend({
         });
 
         //接收下注信息
-
         socket.on('updatescroce', function(obj) {
             self.NumLabel.value = self.NumLabel.value + Number(obj.score);
             self.NumLabel.setString( self.NumLabel.value );
