@@ -678,6 +678,16 @@ class poker extends CI_Controller
         echo json_encode($data);
     }
 
+    //获取玩家准备就绪信号
+    function send_player_ready(){
+        $openid = $this->input->post('openid');
+        $score = $this->input->post('score');
+        $data['score'] = $score;
+        $data['player_ready'] = 1;
+        $data['key'] = md5($openid . $score . $this->nodekey);
+        echo json_encode($data);
+    }
+
 
 
 }

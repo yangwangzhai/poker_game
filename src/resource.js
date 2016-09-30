@@ -18,6 +18,7 @@ var res = {
     s_stop_horn:"res/stop_horn.png",
     s_ok_btn:"res/ok_btn.png",
     s_tip2:"res/tip2.png",
+    s_play_again:"res/welcome_playButton.png",
 
     s_bg_music : "res/audio/bg_music.mp3",
     s_ya : "res/audio/s6.mp3",

@@ -36,6 +36,15 @@ var G_ThouchLayer = cc.Layer.extend({
             }
         });
 
+        socket.on('get_player_ready', function(obj) {
+            if(obj.openid!=wx_info.openid){
+                if(obj.player_ready==1){
+                    self._start_menu.setVisible(true);
+                    self.bet_on_obj.total = obj.score;
+                }
+            }
+        });
+
         //接收结果和具体牌面
         socket.on('otherPlayerGetPoker', function(obj) {
             if(obj.openid!=wx_info.openid){
@@ -69,13 +78,48 @@ var G_ThouchLayer = cc.Layer.extend({
 
         this.initShowDownArea();//设置摊牌按钮位置（点击下注前，隐藏）
 
-        this.initReadyArea();//设置准备按钮位置（点击下注前，隐藏）
+        this.initReadyArea();//设置准备按钮位置，点击之后可以重新下注（点击下注前，隐藏）
+
+        this.initPlayerReadyBtn();//玩家准备按钮，下好注之后，点击该按钮，发送一个信号给庄家，庄家接收到准备就绪信号后，生成开始发牌按钮
 
         this.initOtherXzArea();//设置对方的下注值位置
+
+        this.initPlayAgainBtn();//再玩一局按钮
 
         this.schedule(this.chooseBaker, 1 ,10, 1);    //定时函数，每1秒执行一次chooseBaker函数
 
         return true;
+    },
+
+    //玩家准备按钮
+    initPlayerReadyBtn:function(){
+        this.s_btn_PlayerreadyArea = new cc.MenuItemImage(res.s_ok_btn,res.s_ok_btn,this.PlayerReadyCallback,this);
+        this.s_btn_PlayerreadyArea.attr({
+            x:310,
+            y:480
+        });
+        this.s_btn_PlayerreadyArea.setRotation(90);
+        this._Playerready_menu = new cc.Menu(this.s_btn_PlayerreadyArea);
+        this._Playerready_menu.x=0;
+        this._Playerready_menu.y=0;
+        this.addChild(this._Playerready_menu);
+        this._Playerready_menu.setVisible(false);
+    },
+
+    PlayerReadyCallback:function(){
+        xhr.open("POST", base_url + "&m=send_player_ready");
+        xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status <= 207)) {
+                var httpStatus = xhr.statusText;
+                var responseObj = {sum: 0, game_id: 0, status: 0};
+                responseObj = eval('(' + xhr.responseText + ')');
+                socket.emit('send_player_ready', {score:responseObj.score, openid:wx_info.openid, key:responseObj.key,player_ready:responseObj.player_ready });
+            }
+        };
+        var data = this.postData2(this.bet_on_obj.total);//转换格式
+        xhr.send(data);
+        this._Playerready_menu.setVisible(false);
     },
 
     //选择谁是庄家
@@ -225,9 +269,10 @@ var G_ThouchLayer = cc.Layer.extend({
     //投注之后回调函数：依次累加每次投注的值
     betCallBack: function (sender){
         var effect_ya = cc.audioEngine.playEffect(res.s_ya,false);
+        cc.log(this.bet_on_obj.total);
         if(this.checkYD(this.bet_on_obj.total+sender.bet_num)){
             this.show_xz.setVisible(true);
-            this._start_menu.setVisible(true);
+            this._Playerready_menu.setVisible(true);
             this.s_chipsArea.setVisible(true);
             this.bet_on_obj.total += sender.bet_num;    //累加每次投注的值
             this.show_xz.setString(this.bet_on_obj.total); //设置文本框中的文本
@@ -295,6 +340,28 @@ var G_ThouchLayer = cc.Layer.extend({
         this._start_menu.setVisible(false);
     },
 
+    initPlayAgainBtn:function(){
+        this.s_play_again = new cc.MenuItemImage(res.s_play_again,res.s_play_again,this.PlayAgainCallback,this);
+        this.s_play_again.attr({
+            x:310,
+            y:480
+        });
+        this.s_play_again.setRotation(90);
+        this._s_play_again_menu = new cc.Menu(this.s_play_again);
+        this._s_play_again_menu.x=0;
+        this._s_play_again_menu.y=0;
+        this.addChild(this._s_play_again_menu);
+        this._s_play_again_menu.setVisible(false);
+    },
+
+    PlayAgainCallback:function(){
+        this._s_play_again_menu.setVisible(false);
+        this.poker_value.setVisible(false);
+        this.poker_value2.setVisible(false);
+        this._s_show_down_menu.setVisible(false);
+        this.bet_on_obj.total = 0;
+    },
+
     //准备按钮
     initReadyArea:function(){
         this.s_btn_readyArea = new cc.MenuItemImage(res.s_btn_ready,res.s_btn_ready,this.readyCallback,this);
@@ -309,6 +376,7 @@ var G_ThouchLayer = cc.Layer.extend({
         this.addChild(this._ready_menu);
         this._ready_menu.setVisible(false);
     },
+
     //点击“准备”按钮后的回调函数：隐藏当前显示的扑克、准备按钮、摊牌按钮；显示投注框、投注的值
     readyCallback:function(){
         this.poker_value.setVisible(false);
@@ -368,15 +436,15 @@ var G_ThouchLayer = cc.Layer.extend({
                         self.s_show_downArea.setVisible(true);
                         //玩家翻牌
                         self.scheduleOnce(function(){
-                            var p1 = self.player_num.p_1;
-                            var p2 = self.player_num.p_2;
-                            var player_poker = new cc.Sprite('#'+p1+'_'+p2+'.png');
+                            var b1 = self.player_num.b_1;
+                            var b2 = self.player_num.b_2;
+                            var player_poker = new cc.Sprite('#'+b1+'_'+b2+'.png');
                             player_poker.attr({
                                 x : self.poker_value.width/2,
                                 y : self.poker_value.height/2
                             });
                             self.poker_value.addChild(player_poker);
-                            self.resultAreaShow();
+                            self.resultAreaShow();//显示“翻牌”按钮
                         },0.5);
 
                     }else{
@@ -410,9 +478,9 @@ var G_ThouchLayer = cc.Layer.extend({
 
     //点击“摊牌”按钮后的回调函数：摊开庄家的底牌。。。
     resultCallback:function(){
-        var b1 = this.player_num.b_1;
-        var b2 = this.player_num.b_2;
-        var baker_poker = new cc.Sprite('#'+b1+'_'+b2+'.png');
+        var p1 = this.player_num.p_1;
+        var p2 = this.player_num.p_2;
+        var baker_poker = new cc.Sprite('#'+p1+'_'+p2+'.png');
         baker_poker.attr({
            x :  this.poker_value2.width/2,
            y :  this.poker_value2.height/2
@@ -420,11 +488,11 @@ var G_ThouchLayer = cc.Layer.extend({
         this.poker_value2.addChild(baker_poker);
         //判断谁赢
         if(this.player_num.winner=='baker'){
-            var effect_baker_win = cc.audioEngine.playEffect(res.s_baker_win,false);
-            this.bankerWin();
-        }else{
             var effect_player_win = cc.audioEngine.playEffect(res.s_player_win,false);
             this.playerWin();
+        }else{
+            var effect_baker_win = cc.audioEngine.playEffect(res.s_baker_win,false);
+            this.bankerWin();
         }
         this.s_show_downArea.setVisible(false);
     },
@@ -448,17 +516,20 @@ var G_ThouchLayer = cc.Layer.extend({
     },
 
     playerAdd:function(node){
+        cc.log("总下注值"+this.bet_on_obj.total);
+        cc.log("总下注值"+this.player_num.bets);
         this.show_xz.setString(this.bet_on_obj.total+this.player_num.bets); //设置文本框中的文本
         this.my_YD = this.player_num.My_YD;   //更新我的龙币值
         this.UI_YD = this.player_num.My_YD;   //更新我的龙币值
         BG_Object._mybean.setString(this.my_YD);  //显示最新的龙币值
+        cc.log("最后剩余："+BG_Object._mybean);
         //BG_Object._mywinbean.setString('本次赚取：' + this.bet_on_obj.total);//显示本次赚取的龙币
     },
 
     playerFadeOut:function(node){
         this.s_chipsArea.setVisible(false);
         this.show_xz.setVisible(false);
-        this._ready_menu.setVisible(true);
+        this._s_play_again_menu.setVisible(true);
     },
 
 
@@ -492,7 +563,7 @@ var G_ThouchLayer = cc.Layer.extend({
     },
 
     bakerFadeOut2:function(){
-        this._ready_menu.setVisible(true);
+        this._s_play_again_menu.setVisible(true);
     },
 
     //显示结果
@@ -576,12 +647,12 @@ var G_ThouchLayer = cc.Layer.extend({
         var callback = cc.callFunc(self.showCallBack,self);
         var sequence = cc.sequence(action1,callback);
         self.poker_value.runAction(sequence);
-        self.s_show_downArea.setVisible(true);
+        //self.s_show_downArea.setVisible(true);
         //庄家翻牌
         self.scheduleOnce(function(){
-            var b1 = obj.b_1;
-            var b2 = obj.b_2;
-            var player_poker = new cc.Sprite('#'+b1+'_'+b2+'.png');
+            var p1 = obj.p_1;
+            var p2 = obj.p_2;
+            var player_poker = new cc.Sprite('#'+p1+'_'+p2+'.png');
             player_poker.attr({
                 x : self.poker_value.width/2,
                 y : self.poker_value.height/2
@@ -595,23 +666,23 @@ var G_ThouchLayer = cc.Layer.extend({
 
     //“摊牌”
     initShowOtherDownArea:function(){
-        this.s_show_downArea = new cc.MenuItemImage(res.s_btn_show,res.s_btn_show,this.resultOtherCallback,this);
-        this.s_show_downArea.attr({
+        this.s_other_show_downArea = new cc.MenuItemImage(res.s_btn_show,res.s_btn_show,this.resultOtherCallback,this);
+        this.s_other_show_downArea.attr({
             x:175,
             y:210
         });
-        this.s_show_downArea.setRotation(90);
-        this._s_show_down_menu = new cc.Menu(this.s_show_downArea);
-        this._s_show_down_menu.x=0;
-        this._s_show_down_menu.y=0;
-        this.addChild(this._s_show_down_menu);
+        this.s_other_show_downArea.setRotation(90);
+        this._s_other_show_down_menu = new cc.Menu(this.s_other_show_downArea);
+        this._s_other_show_down_menu.x=0;
+        this._s_other_show_down_menu.y=0;
+        this.addChild(this._s_other_show_down_menu);
     },
 
     //点击“摊牌”按钮后的回调函数：摊开庄家的底牌。。。
     resultOtherCallback:function(){
-        var p1 = this.player_num.p_1;
-        var p2 = this.player_num.p_2;
-        var baker_poker = new cc.Sprite('#'+p1+'_'+p2+'.png');
+        var b1 = this.player_num.b_1;
+        var b2 = this.player_num.b_2;
+        var baker_poker = new cc.Sprite('#'+b1+'_'+b2+'.png');
         baker_poker.attr({
             x :  this.poker_value2.width/2,
             y :  this.poker_value2.height/2
@@ -619,11 +690,11 @@ var G_ThouchLayer = cc.Layer.extend({
         this.poker_value2.addChild(baker_poker);
         //判断谁赢
         if(this.player_num.winner=='baker'){
-            var effect_player_win = cc.audioEngine.playEffect(res.s_player_win,false);
-            this.otherplayerWin();
-        }else{
             var effect_baker_win = cc.audioEngine.playEffect(res.s_baker_win,false);
             this.otherbankerWin();
+        }else{
+            var effect_player_win = cc.audioEngine.playEffect(res.s_player_win,false);
+            this.otherplayerWin();
         }
         this.s_show_downArea.setVisible(false);
     },
@@ -648,7 +719,7 @@ var G_ThouchLayer = cc.Layer.extend({
     otherplayerFadeOut:function(){
         this.s_chipsArea.setVisible(false);
         this.show_xz.setVisible(false);
-        this._start_menu.setVisible(true);
+        this._ready_menu.setVisible(true);
     },
 
 
@@ -672,7 +743,7 @@ var G_ThouchLayer = cc.Layer.extend({
     },
 
     otherbakerFadeOut:function(){
-        this._start_menu.setVisible(true);
+        this._ready_menu.setVisible(true);
     }
 
 });
