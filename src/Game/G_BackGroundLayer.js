@@ -10,6 +10,7 @@
 
 var BG_Object = null;
 var PlayerType = null;
+var OtherPlayerOpenid = null;
 var G_BackGroundLayer = cc.Layer.extend({
     sprite:null,
     _Avatar : null,
@@ -41,6 +42,8 @@ var G_BackGroundLayer = cc.Layer.extend({
         //接收
         socket.on('sendOther', function(obj) {
             cc.log(obj);
+            OtherPlayerOpenid = obj.openid;
+            cc.log("另一个人的信息的openid："+OtherPlayerOpenid);
             if(obj.openid != wx_info.openid){
                 self.changeOtherPlayer(obj);
             }
@@ -49,6 +52,9 @@ var G_BackGroundLayer = cc.Layer.extend({
 
         //接收另一个人的信息
         socket.on('sendMyself', function(obj) {
+            cc.log("另一个人的信息："+obj);
+            cc.log("另一个人的信息的openid："+obj.OtherPlayerOpenid);
+            OtherPlayerOpenid = obj.OtherPlayerOpenid;
             self.changeOtherPlayer(obj);
         });
 
@@ -131,7 +137,7 @@ var G_BackGroundLayer = cc.Layer.extend({
 
     },
 
-    //加载对手玩家微信头像、微信昵称、我的烟豆、赚取烟豆
+    //加载对手玩家微信头像、微信昵称、烟豆
     initPlayerHeader : function(obj) {
         var self = this;
         //加载微信头像到背景图的某个位置

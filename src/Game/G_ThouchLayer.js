@@ -455,13 +455,15 @@ var G_ThouchLayer = cc.Layer.extend({
                 }
             }
         };
-        xhr.send(this.postData(this.bet_on_obj.total));//发送下注信息到服务器
+        var params = "openid="+wx_info.openid+"&gamekey="+wx_info.gamekey+"&bet_num="+this.bet_on_obj.total+"&otherplayeropenid="+OtherPlayerOpenid;
+        xhr.send(params);//发送下注信息到服务器
 
     },
 
     //放置一张扑克牌（正面）隐藏
     showCallBack:function(node){
         //给庄家发背面牌
+        cc.log("给对手发牌");
         this.poker_value2  = new cc.Sprite(res.s_bg_poker);
         this.poker_value2.attr({
             x:this.WinSize.width/2,
@@ -508,7 +510,7 @@ var G_ThouchLayer = cc.Layer.extend({
         this.playerChips.setRotation(90);
         this.addChild( this.playerChips );
         var action1 = cc.moveTo(1,cc.p(this.playerChips.height/2+113, this.WinSize.height-this.playerChips.width/2-16));
-        var callback1 = cc.callFunc(this.playerAdd,this);
+        var callback1 = cc.callFunc(this.playerAdd,this);   //龙币加
         var action2 = cc.fadeOut(0.5);
         var callback2 = cc.callFunc(this.playerFadeOut,this);
         var sequence = cc.sequence(action1,callback1,action2,callback2);
@@ -518,10 +520,12 @@ var G_ThouchLayer = cc.Layer.extend({
     playerAdd:function(node){
         cc.log("总下注值"+this.bet_on_obj.total);
         cc.log("总下注值"+this.player_num.bets);
+        cc.log("庄家"+this.player_num.My_YD);
         this.show_xz.setString(this.bet_on_obj.total+this.player_num.bets); //设置文本框中的文本
         this.my_YD = this.player_num.My_YD;   //更新我的龙币值
         this.UI_YD = this.player_num.My_YD;   //更新我的龙币值
         BG_Object._mybean.setString(this.my_YD);  //显示最新的龙币值
+        BG_Object.scoreLabel2.setString(this.Other_YD);  //显示对方最新的龙币值
         cc.log("最后剩余："+BG_Object._mybean);
         //BG_Object._mywinbean.setString('本次赚取：' + this.bet_on_obj.total);//显示本次赚取的龙币
     },
@@ -554,11 +558,13 @@ var G_ThouchLayer = cc.Layer.extend({
     },
 
     bakerFadeOut:function(){
+        cc.log("更新龙币");
         this.s_chipsArea.setVisible(false);
         this.show_xz.setVisible(false);
         this.my_YD = this.player_num.My_YD;   //更新我的龙币值
         this.UI_YD = this.player_num.My_YD;   //更新我的龙币值
         BG_Object._mybean.setString(this.my_YD);  //显示最新的龙币值
+        BG_Object.scoreLabel2.setString(this.Other_YD);  //显示对方最新的龙币值
         //BG_Object._mywinbean.setString('本次赚取：-' + this.bet_on_obj.total);
     },
 
@@ -633,6 +639,7 @@ var G_ThouchLayer = cc.Layer.extend({
 
     showOtherPoker:function(obj){
         //给庄家发背景牌
+        cc.log("给自己发牌");
         this.player_num = obj;
         var self = this;
         self.resultAreaHide();
@@ -661,7 +668,7 @@ var G_ThouchLayer = cc.Layer.extend({
             self.initShowOtherDownArea();
         },0.5);
 
-
+        cc.log("发牌结束");
     },
 
     //“摊牌”
@@ -709,11 +716,18 @@ var G_ThouchLayer = cc.Layer.extend({
         this.playerChips.setRotation(90);
         this.addChild( this.playerChips );
         var action1 = cc.moveTo(1,cc.p(this.playerChips.height/2+113, this.WinSize.height-this.playerChips.width/2-16));
-        var callback1 = cc.callFunc(this.playerAdd,this);
+        var callback1 = cc.callFunc(this.playerAdd2,this);
         var action2 = cc.fadeOut(0.5);
         var callback2 = cc.callFunc(this.otherplayerFadeOut,this);
         var sequence = cc.sequence(action1,callback1,action2,callback2);
         this.playerChips.runAction(sequence);
+    },
+
+    playerAdd2:function(){
+        this.show_xz.setString(this.my_YD+this.player_num.score); //设置文本框中的文本
+        this.my_YD = this.my_YD+this.player_num.score;   //更新我的龙币值
+        this.UI_YD = this.my_YD+this.player_num.score;   //更新我的龙币值
+        BG_Object._mybean.setString(this.my_YD);  //显示最新的龙币值
     },
 
     otherplayerFadeOut:function(){
@@ -734,15 +748,27 @@ var G_ThouchLayer = cc.Layer.extend({
         this.playerChipsTemp.setRotation(90);
         this.addChild( this.playerChipsTemp );
 
-        var callback1 = cc.callFunc(this.bakerFadeOut,this);
+        var callback1 = cc.callFunc(this.otherbakerFadeOut,this);
         var action1 = cc.moveTo(1,cc.p(450, 300));
-        var callback2 = cc.callFunc(this.otherbakerFadeOut,this);
+        var callback2 = cc.callFunc(this.otherbakerFadeOut2,this);
         var action2 = cc.fadeOut(1);
         var sequence = cc.sequence(callback1,action1,callback2,action2);
         this.playerChipsTemp.runAction(sequence);
     },
 
     otherbakerFadeOut:function(){
+        cc.log("玩家更新-当前下注值1-异步："+this.bet_on_obj.total);
+        cc.log("玩家更新-当前下注值2-异步："+this.player_num.score);
+        cc.log("玩家更新-当前龙币-异步："+this.my_YD);
+        cc.log("玩家更新-最后剩余龙币-异步："+this.my_YD-this.player_num.score);
+        this.s_chipsArea.setVisible(false);
+        this.show_xz.setVisible(false);
+        this.my_YD = this.my_YD-this.player_num.score;   //更新我的龙币值
+        this.UI_YD = this.my_YD-this.player_num.score;   //更新我的龙币值
+        BG_Object._mybean.setString(this.my_YD);  //显示最新的龙币值
+    },
+
+    otherbakerFadeOut2:function(){
         this._ready_menu.setVisible(true);
     }
 

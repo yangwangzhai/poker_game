@@ -101,6 +101,7 @@ class poker extends CI_Controller
     public function main(){
         if($this->checkGameKey()){  //验证用户身份
             $openid = trim($_POST['openid']);
+            $otherplayeropenid = trim($_POST['otherplayeropenid']);
             //验证烟豆是否够下注
             $my_YD = $this->getYD($openid);
             $sum = intval($_POST['bet_num']);
@@ -137,9 +138,16 @@ class poker extends CI_Controller
                         echo "<pre/>";
                         echo $b_key;echo "<br>";*/
                     }else{
-                        $b_key = $this->getProbability($arr_all,$sum,$p_key);
-                    }
+                        $baker_type = 1; //1代表两个真正的玩家对战，0代表一个玩家一个系统。
+                        if($baker_type){
+                            $arr_all_temp = $arr_all;
+                            unset($arr_all_temp[$p_key]);
+                            $b_key = array_rand($arr_all_temp);
+                        }else{
+                            $b_key = $this->getProbability($arr_all,$sum,$p_key);
+                        }
 
+                    }
                     $p = $arr_all[$p_key];
                     //echo "玩家的值：".$p;echo "<br>";
                     $p_1 = $arr_hs[$p%10];  //玩家牌的花色
@@ -158,13 +166,16 @@ class poker extends CI_Controller
                     }
                     //增加或者扣除龙币
                     if($winner=="baker"){
-                        $My_YD = $this->subYD($openid,abs($sum)); //庄家赢，扣除龙币
+                        $My_YD = $this->addYD($openid,abs($sum)); //庄家赢，增加龙币
+                        $Other_YD = $this->subYD($otherplayeropenid,abs($sum)); //玩家输，扣除龙币
                     }else{
-                        $My_YD = $this->addYD($openid,abs($sum)); //闲家赢，增加龙币
+                        $My_YD = $this->subYD($openid,abs($sum)); //庄家输，扣除龙币
+                        $Other_YD = $this->addYD($otherplayeropenid,abs($sum)); //玩家赢，增加龙币
                     }
 
                     //下注信息写入数据库
                     $BetOndata['Openid'] = $openid;
+                    $BetOndata['PlayerOpenid'] = $otherplayeropenid;
                     $BetOndata['bet'] = $sum;
                     $BetOndata['p_poker_face'] = $p_1."_".$p_2;
                     $BetOndata['b_poker_face'] = $b_1."_".$b_2;
@@ -177,7 +188,7 @@ class poker extends CI_Controller
                     $BetOndata['AddTime'] = time();
                     $this->db->insert('zy_bet_on',$BetOndata);
                     $key = md5($openid . $sum . $this->nodekey);
-                    $result = array('Code'=>0,'Msg'=>'成功','p_1'=>$p_1,'p_2'=>$p_2,'b_1'=>$b_1,'b_2'=>$b_2,'winner'=>$winner,'bets'=>$sum,'My_YD'=>$My_YD,'key'=>$key);
+                    $result = array('Code'=>0,'Msg'=>'成功','p_1'=>$p_1,'p_2'=>$p_2,'b_1'=>$b_1,'b_2'=>$b_2,'winner'=>$winner,'bets'=>$sum,'My_YD'=>$My_YD,'Other_YD'=>$Other_YD,'key'=>$key);
             }
         }else{
             $result = array('Code'=>-1,'Msg'=>'数据异常');
