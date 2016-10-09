@@ -44,6 +44,10 @@ class poker extends CI_Controller
                 $HeadImg = './res/b.jpg';
             }elseif($test=="c"){
                 $HeadImg = './res/c.jpg';
+            }elseif($test=="d"){
+                $HeadImg = './res/d.jpg';
+            }elseif($test=="e"){
+                $HeadImg = './res/e.jpg';
             }
 	        $data['wx_info'] = array(
 	            'Openid' => "user-".$test,

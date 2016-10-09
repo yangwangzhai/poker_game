@@ -13,6 +13,7 @@ var G_ThouchLayer = cc.Layer.extend({
     poker_value:null,//玩家背景牌精灵
     poker_value2:null,//庄家背景牌精灵
     player_num:null,//玩家、庄家的牌数（从后台异步获取）
+    player_num2:null,//玩家、庄家的牌数（从后台异步获取）
     bgmusic_flag:null,
     MusicSet:null,
     EffectsSet:null,
@@ -107,19 +108,24 @@ var G_ThouchLayer = cc.Layer.extend({
     },
 
     PlayerReadyCallback:function(){
-        xhr.open("POST", base_url + "&m=send_player_ready");
-        xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status <= 207)) {
-                var httpStatus = xhr.statusText;
-                var responseObj = {sum: 0, game_id: 0, status: 0};
-                responseObj = eval('(' + xhr.responseText + ')');
-                socket.emit('send_player_ready', {score:responseObj.score, openid:wx_info.openid, key:responseObj.key,player_ready:responseObj.player_ready });
-            }
-        };
-        var data = this.postData2(this.bet_on_obj.total);//转换格式
-        xhr.send(data);
-        this._Playerready_menu.setVisible(false);
+        if(game_type==1){
+            this.beginCallback();
+        }else{
+            xhr.open("POST", base_url + "&m=send_player_ready");
+            xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status <= 207)) {
+                    var httpStatus = xhr.statusText;
+                    var responseObj = {sum: 0, game_id: 0, status: 0};
+                    responseObj = eval('(' + xhr.responseText + ')');
+                    socket.emit('send_player_ready', {score:responseObj.score, openid:wx_info.openid, key:responseObj.key,player_ready:responseObj.player_ready,roomid:room_id});
+                }
+            };
+            var data = this.postData2(this.bet_on_obj.total);//转换格式
+            xhr.send(data);
+            this._Playerready_menu.setVisible(false);
+        }
+
     },
 
     //选择谁是庄家
@@ -286,7 +292,7 @@ var G_ThouchLayer = cc.Layer.extend({
                     var httpStatus = xhr.statusText;
                     var responseObj = {sum: 0, game_id: 0, status: 0};
                     responseObj = eval('(' + xhr.responseText + ')');
-                    socket.emit('savescroce', {score:responseObj.score, openid:wx_info.openid, key:responseObj.key });
+                    socket.emit('savescroce', {score:responseObj.score, openid:wx_info.openid, key:responseObj.key ,roomid:room_id});
                 }
             };
             var data = this.postData2(this.bet_on_obj.total);//转换格式
@@ -418,7 +424,7 @@ var G_ThouchLayer = cc.Layer.extend({
                     var response = eval("("+xhr.responseText+")");//接收服务器返回结果
                     self.player_num =response ; //玩家、庄家的牌数赋值给全景变量
                     //将结果和具体牌面发给对手
-                    socket.emit('sendPokerNum', {score:response.bets,winner:response.winner, openid:wx_info.openid, p_1:response.p_1,p_2:response.p_2, b_1:response.b_1,b_2:response.b_2,key:response.key});
+                    socket.emit('sendPokerNum', {score:response.bets,winner:response.winner, openid:wx_info.openid, p_1:response.p_1,p_2:response.p_2, b_1:response.b_1,b_2:response.b_2,key:response.key,F_My_YD:response.Other_YD,F_Other_YD:response.My_YD,roomid:room_id});
                     if(response.Code == 0){
                         //给闲家发背面牌
                         self.resultAreaHide();
@@ -525,7 +531,8 @@ var G_ThouchLayer = cc.Layer.extend({
         this.my_YD = this.player_num.My_YD;   //更新我的龙币值
         this.UI_YD = this.player_num.My_YD;   //更新我的龙币值
         BG_Object._mybean.setString(this.my_YD);  //显示最新的龙币值
-        BG_Object.scoreLabel2.setString(this.Other_YD);  //显示对方最新的龙币值
+        BG_Object.scoreLabel2.setString(this.player_num.Other_YD);  //显示对方最新的龙币值
+        this.other_show_xz.setString(0);  //对方下注值归零
         cc.log("最后剩余："+BG_Object._mybean);
         //BG_Object._mywinbean.setString('本次赚取：' + this.bet_on_obj.total);//显示本次赚取的龙币
     },
@@ -564,7 +571,8 @@ var G_ThouchLayer = cc.Layer.extend({
         this.my_YD = this.player_num.My_YD;   //更新我的龙币值
         this.UI_YD = this.player_num.My_YD;   //更新我的龙币值
         BG_Object._mybean.setString(this.my_YD);  //显示最新的龙币值
-        BG_Object.scoreLabel2.setString(this.Other_YD);  //显示对方最新的龙币值
+        BG_Object.scoreLabel2.setString(this.player_num.Other_YD);  //显示对方最新的龙币值
+        this.other_show_xz.setString(0);  //对方下注值归零
         //BG_Object._mywinbean.setString('本次赚取：-' + this.bet_on_obj.total);
     },
 
@@ -640,7 +648,7 @@ var G_ThouchLayer = cc.Layer.extend({
     showOtherPoker:function(obj){
         //给庄家发背景牌
         cc.log("给自己发牌");
-        this.player_num = obj;
+        this.player_num2 = obj;
         var self = this;
         self.resultAreaHide();
         self.poker_value  = new cc.Sprite(res.s_bg_poker);
@@ -687,8 +695,8 @@ var G_ThouchLayer = cc.Layer.extend({
 
     //点击“摊牌”按钮后的回调函数：摊开庄家的底牌。。。
     resultOtherCallback:function(){
-        var b1 = this.player_num.b_1;
-        var b2 = this.player_num.b_2;
+        var b1 = this.player_num2.b_1;
+        var b2 = this.player_num2.b_2;
         var baker_poker = new cc.Sprite('#'+b1+'_'+b2+'.png');
         baker_poker.attr({
             x :  this.poker_value2.width/2,
@@ -696,7 +704,7 @@ var G_ThouchLayer = cc.Layer.extend({
         });
         this.poker_value2.addChild(baker_poker);
         //判断谁赢
-        if(this.player_num.winner=='baker'){
+        if(this.player_num2.winner=='baker'){
             var effect_baker_win = cc.audioEngine.playEffect(res.s_baker_win,false);
             this.otherbankerWin();
         }else{
@@ -724,10 +732,13 @@ var G_ThouchLayer = cc.Layer.extend({
     },
 
     playerAdd2:function(){
-        this.show_xz.setString(this.my_YD+this.player_num.score); //设置文本框中的文本
-        this.my_YD = this.my_YD+this.player_num.score;   //更新我的龙币值
-        this.UI_YD = this.my_YD+this.player_num.score;   //更新我的龙币值
-        BG_Object._mybean.setString(this.my_YD);  //显示最新的龙币值
+        this.show_xz.setString(this.my_YD+this.player_num2.score); //设置文本框中的文本
+        this.my_YD = this.player_num2.FF_My_YD;   //更新我的龙币值
+        this.UI_YD = this.player_num2.FF_My_YD;   //更新我的龙币值
+        cc.log("自己的最新龙币值-玩家"+this.player_num2.FF_My_YD);
+        cc.log("庄家的最新龙币值-玩家"+this.player_num2.FF_Other_YD);
+        BG_Object._mybean.setString(this.player_num2.FF_My_YD);  //显示最新的龙币值
+        BG_Object.scoreLabel2.setString(this.player_num2.FF_Other_YD);    //显示对方最新龙币值
     },
 
     otherplayerFadeOut:function(){
@@ -757,15 +768,14 @@ var G_ThouchLayer = cc.Layer.extend({
     },
 
     otherbakerFadeOut:function(){
-        cc.log("玩家更新-当前下注值1-异步："+this.bet_on_obj.total);
-        cc.log("玩家更新-当前下注值2-异步："+this.player_num.score);
-        cc.log("玩家更新-当前龙币-异步："+this.my_YD);
-        cc.log("玩家更新-最后剩余龙币-异步："+this.my_YD-this.player_num.score);
         this.s_chipsArea.setVisible(false);
         this.show_xz.setVisible(false);
-        this.my_YD = this.my_YD-this.player_num.score;   //更新我的龙币值
-        this.UI_YD = this.my_YD-this.player_num.score;   //更新我的龙币值
-        BG_Object._mybean.setString(this.my_YD);  //显示最新的龙币值
+        this.my_YD = this.player_num2.FF_My_YD;   //更新我的龙币值
+        this.UI_YD = this.player_num2.FF_My_YD;   //更新我的龙币值
+        cc.log("自己的最新龙币值-玩家"+this.player_num2.FF_My_YD);
+        cc.log("庄家的最新龙币值-玩家"+this.player_num2.FF_Other_YD);
+        BG_Object._mybean.setString(this.player_num2.FF_My_YD);  //显示最新的龙币值
+        BG_Object.scoreLabel2.setString(this.player_num2.FF_Other_YD);    //显示对方最新龙币值
     },
 
     otherbakerFadeOut2:function(){

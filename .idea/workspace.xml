@@ -33,16 +33,11 @@
       <file leaf-file-name="poker.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/controllers/poker.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-16.59375" vertical-offset="3839" max-vertical-offset="16353">
-              <caret line="190" column="162" selection-start-line="190" selection-start-column="154" selection-end-line="190" selection-end-column="162" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1127" max-vertical-offset="16399">
+              <caret line="49" column="41" selection-start-line="49" selection-start-column="41" selection-end-line="49" selection-end-column="41" />
               <folding>
-                <marker date="1475921079089" expanded="true" signature="8265:10704" placeholder="..." />
-                <marker date="1475921079089" expanded="true" signature="8387:10704" placeholder="..." />
-                <marker date="1475921079089" expanded="true" signature="9734:10704" placeholder="..." />
-                <marker date="1475921079089" expanded="true" signature="9810:10704" placeholder="..." />
-                <marker date="1475921079089" expanded="true" signature="9886:10704" placeholder="..." />
-                <marker date="1475921079089" expanded="true" signature="20223:20265" placeholder="update zy_ga..." />
-                <marker date="1475921079089" expanded="true" signature="20347:20461" placeholder="update zy_ga..." />
+                <marker date="1475980381022" expanded="true" signature="20373:20415" placeholder="update zy_ga..." />
+                <marker date="1475980381022" expanded="true" signature="20497:20611" placeholder="update zy_ga..." />
               </folding>
             </state>
           </provider>
@@ -51,11 +46,9 @@
       <file leaf-file-name="poker.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/views/poker.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="10.0625" vertical-offset="851" max-vertical-offset="1656">
+            <state vertical-scroll-proportion="0.0" vertical-offset="529" max-vertical-offset="1610">
               <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-              <folding>
-                <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -63,7 +56,7 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1104" max-vertical-offset="1840">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1587" max-vertical-offset="1794">
               <caret line="69" column="35" selection-start-line="69" selection-start-column="35" selection-end-line="69" selection-end-column="35" />
               <folding />
             </state>
@@ -73,7 +66,7 @@
       <file leaf-file-name="GameScene.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Game/GameScene.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1104">
+            <state vertical-scroll-proportion="0.0" vertical-offset="690" max-vertical-offset="1104">
               <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="4" />
               <folding />
             </state>
@@ -83,8 +76,8 @@
       <file leaf-file-name="G_BackGroundLayer.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Game/G_BackGroundLayer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3895" max-vertical-offset="4623">
-              <caret line="187" column="24" selection-start-line="187" selection-start-column="13" selection-end-line="187" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1380" max-vertical-offset="4715">
+              <caret line="60" column="38" selection-start-line="60" selection-start-column="38" selection-end-line="60" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -93,8 +86,8 @@
       <file leaf-file-name="G_ThouchLayer.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Game/G_ThouchLayer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="5.071429" vertical-offset="9372" max-vertical-offset="18078">
-              <caret line="565" column="8" selection-start-line="565" selection-start-column="8" selection-end-line="565" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.364011" vertical-offset="10223" max-vertical-offset="18331">
+              <caret line="453" column="30" selection-start-line="453" selection-start-column="30" selection-end-line="453" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -103,7 +96,7 @@
       <file leaf-file-name="resource.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/resource.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="146" max-vertical-offset="897">
+            <state vertical-scroll-proportion="0.0" vertical-offset="460" max-vertical-offset="897">
               <caret line="20" column="16" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="16" />
               <folding />
             </state>
@@ -164,8 +157,8 @@
         <option value="$PROJECT_DIR$/project.json" />
         <option value="$PROJECT_DIR$/src/TipScene.js" />
         <option value="$PROJECT_DIR$/src/resource.js" />
-        <option value="$PROJECT_DIR$/src/Game/G_BackGroundLayer.js" />
         <option value="$PROJECT_DIR$/application/controllers/poker.php" />
+        <option value="$PROJECT_DIR$/src/Game/G_BackGroundLayer.js" />
         <option value="$PROJECT_DIR$/src/Game/G_ThouchLayer.js" />
       </list>
     </option>
@@ -297,7 +290,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15616046" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16045845" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -346,13 +339,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="4117" max-vertical-offset="15824">
           <caret line="179" column="166" selection-start-line="179" selection-start-column="166" selection-end-line="179" selection-end-column="166" />
           <folding>
-            <marker date="1475921079089" expanded="true" signature="8265:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="8387:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="9734:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="9810:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="9886:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="20223:20265" placeholder="update zy_ga..." />
-            <marker date="1475921079089" expanded="true" signature="20347:20461" placeholder="update zy_ga..." />
+            <marker date="1475980381022" expanded="true" signature="20373:20415" placeholder="update zy_ga..." />
+            <marker date="1475980381022" expanded="true" signature="20497:20611" placeholder="update zy_ga..." />
           </folding>
         </state>
       </provider>
@@ -361,9 +349,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="437" max-vertical-offset="1610">
           <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -433,13 +419,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="1127" max-vertical-offset="15617">
           <caret line="49" column="37" selection-start-line="49" selection-start-column="37" selection-end-line="49" selection-end-column="37" />
           <folding>
-            <marker date="1475921079089" expanded="true" signature="8265:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="8387:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="9734:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="9810:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="9886:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="20223:20265" placeholder="update zy_ga..." />
-            <marker date="1475921079089" expanded="true" signature="20347:20461" placeholder="update zy_ga..." />
+            <marker date="1475980381022" expanded="true" signature="20373:20415" placeholder="update zy_ga..." />
+            <marker date="1475980381022" expanded="true" signature="20497:20611" placeholder="update zy_ga..." />
           </folding>
         </state>
       </provider>
@@ -448,9 +429,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="552" max-vertical-offset="1587">
           <caret line="24" column="8" selection-start-line="24" selection-start-column="8" selection-end-line="24" selection-end-column="8" />
-          <folding>
-            <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -579,13 +558,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="15318">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1475921079089" expanded="true" signature="8265:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="8387:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="9734:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="9810:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="9886:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="20223:20265" placeholder="update zy_ga..." />
-            <marker date="1475921079089" expanded="true" signature="20347:20461" placeholder="update zy_ga..." />
+            <marker date="1475980381022" expanded="true" signature="20373:20415" placeholder="update zy_ga..." />
+            <marker date="1475980381022" expanded="true" signature="20497:20611" placeholder="update zy_ga..." />
           </folding>
         </state>
       </provider>
@@ -594,9 +568,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="989">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -723,14 +695,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/resource.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="146" max-vertical-offset="897">
-          <caret line="20" column="16" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1104" max-vertical-offset="1840">
@@ -747,44 +711,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Game/G_BackGroundLayer.js">
+    <entry file="file://$PROJECT_DIR$/application/views/poker.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3895" max-vertical-offset="4623">
-          <caret line="187" column="24" selection-start-line="187" selection-start-column="13" selection-end-line="187" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="529" max-vertical-offset="1610">
+          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/poker.php">
+    <entry file="file://$PROJECT_DIR$/src/resource.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="10.0625" vertical-offset="851" max-vertical-offset="1656">
-          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-          <folding>
-            <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="897">
+          <caret line="20" column="16" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/application/controllers/poker.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.59375" vertical-offset="3839" max-vertical-offset="16353">
-          <caret line="190" column="162" selection-start-line="190" selection-start-column="154" selection-end-line="190" selection-end-column="162" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1127" max-vertical-offset="16399">
+          <caret line="49" column="41" selection-start-line="49" selection-start-column="41" selection-end-line="49" selection-end-column="41" />
           <folding>
-            <marker date="1475921079089" expanded="true" signature="8265:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="8387:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="9734:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="9810:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="9886:10704" placeholder="..." />
-            <marker date="1475921079089" expanded="true" signature="20223:20265" placeholder="update zy_ga..." />
-            <marker date="1475921079089" expanded="true" signature="20347:20461" placeholder="update zy_ga..." />
+            <marker date="1475980381022" expanded="true" signature="20373:20415" placeholder="update zy_ga..." />
+            <marker date="1475980381022" expanded="true" signature="20497:20611" placeholder="update zy_ga..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Game/G_BackGroundLayer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1380" max-vertical-offset="4715">
+          <caret line="60" column="38" selection-start-line="60" selection-start-column="38" selection-end-line="60" selection-end-column="38" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Game/G_ThouchLayer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="5.071429" vertical-offset="9372" max-vertical-offset="18078">
-          <caret line="565" column="8" selection-start-line="565" selection-start-column="8" selection-end-line="565" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.364011" vertical-offset="10223" max-vertical-offset="18331">
+          <caret line="453" column="30" selection-start-line="453" selection-start-column="30" selection-end-line="453" selection-end-column="30" />
           <folding />
         </state>
       </provider>

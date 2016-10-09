@@ -11,6 +11,8 @@
 var BG_Object = null;
 var PlayerType = null;
 var OtherPlayerOpenid = null;
+var room_id = null;
+var game_type = null;
 var G_BackGroundLayer = cc.Layer.extend({
     sprite:null,
     _Avatar : null,
@@ -54,7 +56,9 @@ var G_BackGroundLayer = cc.Layer.extend({
         socket.on('sendMyself', function(obj) {
             cc.log("另一个人的信息："+obj);
             cc.log("另一个人的信息的openid："+obj.OtherPlayerOpenid);
+            cc.log("游戏类型为："+obj.game_type);
             OtherPlayerOpenid = obj.OtherPlayerOpenid;
+            game_type = obj.game_type;
             self.changeOtherPlayer(obj);
         });
 
