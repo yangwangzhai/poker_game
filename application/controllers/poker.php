@@ -105,7 +105,8 @@ class poker extends CI_Controller
     public function main(){
         if($this->checkGameKey()){  //验证用户身份
             $openid = trim($_POST['openid']);
-            $otherplayeropenid = trim($_POST['otherplayeropenid']);
+            $other_openid = trim($_POST['otherplayeropenid']);
+            $game_type = trim($_POST['game_type']);//0代表两个真正的玩家对战，1代表一个玩家一个系统。
             //验证烟豆是否够下注
             $my_YD = $this->getYD($openid);
             $sum = intval($_POST['bet_num']);
@@ -142,13 +143,12 @@ class poker extends CI_Controller
                         echo "<pre/>";
                         echo $b_key;echo "<br>";*/
                     }else{
-                        $baker_type = 1; //1代表两个真正的玩家对战，0代表一个玩家一个系统。
-                        if($baker_type){
+                        if($game_type){
+                            $b_key = $this->getProbability($arr_all,$sum,$p_key);
+                        }else{
                             $arr_all_temp = $arr_all;
                             unset($arr_all_temp[$p_key]);
                             $b_key = array_rand($arr_all_temp);
-                        }else{
-                            $b_key = $this->getProbability($arr_all,$sum,$p_key);
                         }
 
                     }
@@ -169,17 +169,40 @@ class poker extends CI_Controller
                         $winner = "player";
                     }
                     //增加或者扣除龙币
-                    if($winner=="baker"){
-                        $My_YD = $this->addYD($openid,abs($sum)); //庄家赢，增加龙币
-                        $Other_YD = $this->subYD($otherplayeropenid,abs($sum)); //玩家输，扣除龙币
+                    if($game_type){
+                        //赢的要被抽水
+                        if(0<$sum&&$sum<10){
+                            $rent = 1;
+                        }elseif(10<=$sum&&$sum<30){
+                            $rent = 2;
+                        }elseif(30<=$sum&&$sum<50){
+                            $rent = 5;
+                        }elseif(50<=$sum&&$sum<100){
+                            $rent = 10;
+                        }else{
+                            $rent = 20;
+                        }
+                        $win_sum = $sum-$rent;
+                        if($winner=="baker"){
+                            $Other_YD = $this->xt_addYD($other_openid,abs($win_sum)); //系统庄家赢，增加龙币
+                            $My_YD = $this->subYD($openid,abs($sum)); //玩家家输，扣除龙币
+                        }else{
+                            $My_YD = $this->addYD($openid,abs($win_sum)); //玩家赢，增加龙币
+                            $Other_YD = $this->xt_subYD($other_openid,abs($sum)); //系统庄家输，扣除龙币
+                        }
                     }else{
-                        $My_YD = $this->subYD($openid,abs($sum)); //庄家输，扣除龙币
-                        $Other_YD = $this->addYD($otherplayeropenid,abs($sum)); //玩家赢，增加龙币
+                        if($winner=="baker"){
+                            $My_YD = $this->addYD($openid,abs($sum)); //庄家赢，增加龙币
+                            $Other_YD = $this->subYD($other_openid,abs($sum)); //玩家输，扣除龙币
+                        }else{
+                            $My_YD = $this->subYD($openid,abs($sum)); //庄家输，扣除龙币
+                            $Other_YD = $this->addYD($other_openid,abs($sum)); //玩家赢，增加龙币
+                        }
                     }
 
                     //下注信息写入数据库
                     $BetOndata['Openid'] = $openid;
-                    $BetOndata['PlayerOpenid'] = $otherplayeropenid;
+                    $BetOndata['PlayerOpenid'] = $other_openid;
                     $BetOndata['bet'] = $sum;
                     $BetOndata['p_poker_face'] = $p_1."_".$p_2;
                     $BetOndata['b_poker_face'] = $b_1."_".$b_2;
@@ -514,11 +537,19 @@ class poker extends CI_Controller
         return $this->db->update('zy_player', $Udata, $where);
     }
 
-    private function getYD($openid) {//获取烟豆接口
+    private function getYD($openid) {//人人对战时，获取龙币接口
         if(!$openid){
             return false;
         }
         $Pdata = $this->db->get_where('zy_player',array('Openid'=>$openid))->row_array();
+        return $Pdata['TotalGold'];
+    }
+
+    private function xt_getYD($openid) {//人人对战时，获取龙币接口
+        if(!$openid){
+            return false;
+        }
+        $Pdata = $this->db->get_where('zy_xt_player',array('Openid'=>$openid))->row_array();
         return $Pdata['TotalGold'];
     }
 
@@ -530,7 +561,7 @@ class poker extends CI_Controller
         return $Pdata;
     }
 
-	//添加烟豆
+	//人人对战添加烟豆
     private function addYD($openid,$num){
     	if(!is_numeric($num) || $num < 0){
     		return false;
@@ -541,7 +572,18 @@ class poker extends CI_Controller
     	return $this->getYD($openid);
     }
 
-    //扣除烟豆
+    //人机对战添加烟豆
+    private function xt_addYD($openid,$num){
+        if(!is_numeric($num) || $num < 0){
+            return false;
+        }
+        $this->db->set('TotalGold', 'TotalGold+'.$num, FALSE);
+        $this->db->where(array('Openid'=>$openid));
+        $this->db->update('zy_xt_player');
+        return $this->xt_getYD($openid);
+    }
+
+    //人人对战扣除烟豆
 	private function subYD($openid,$num){
         //判断下注值是否为数字或者是否<0
 		if(!is_numeric($num) || $num < 0){
@@ -552,6 +594,18 @@ class poker extends CI_Controller
 		$this->db->update('zy_player');
 		return $this->getYD($openid);
 	}
+
+    //人机对战扣除烟豆
+    private function xt_subYD($openid,$num){
+        //判断下注值是否为数字或者是否<0
+        if(!is_numeric($num) || $num < 0){
+            return false;
+        }
+        $this->db->set('TotalGold', 'TotalGold-'.$num, FALSE);
+        $this->db->where(array('Openid'=>$openid));
+        $this->db->update('zy_xt_player');
+        return $this->xt_getYD($openid);
+    }
 
     private function getKey(){
     	$src_str = "abcdefghijklmnopqrstuvwxyz0123456789";

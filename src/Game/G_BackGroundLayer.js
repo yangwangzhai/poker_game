@@ -41,22 +41,31 @@ var G_BackGroundLayer = cc.Layer.extend({
             cc.log(PlayerType);
         });
 
-        //接收
+        //第一个人进来后，等待第二个人进来，匹配成功后，接收第二个人的信息（第一个人执行的是此函数）
         socket.on('sendOther', function(obj) {
-            cc.log(obj);
-            OtherPlayerOpenid = obj.openid;
-            cc.log("另一个人的信息的openid："+OtherPlayerOpenid);
             if(obj.openid != wx_info.openid){
+                OtherPlayerOpenid = obj.openid;
+                cc.log("sendOther-接收第二个人的openid："+OtherPlayerOpenid);
                 self.changeOtherPlayer(obj);
             }
 
         });
 
-        //接收另一个人的信息
+        //第二个人进来后，匹配第一个人的信息，成功后接收第一个人的信息（第二个人执行此函数）
         socket.on('sendMyself', function(obj) {
-            cc.log("另一个人的信息："+obj);
-            cc.log("另一个人的信息的openid："+obj.OtherPlayerOpenid);
-            cc.log("游戏类型为："+obj.game_type);
+            if(obj.openid == wx_info.openid){
+                cc.log("sendMyself-接收第一个人的openid："+obj.OtherPlayerOpenid);
+                cc.log("sendMyself-游戏类型为："+obj.game_type);
+                OtherPlayerOpenid = obj.OtherPlayerOpenid;
+                game_type = obj.game_type;
+                self.changeOtherPlayer(obj);
+            }
+        });
+
+        //接收系统随机抽取的人
+        socket.on('xt_send',function(obj){
+            cc.log("xt_send-接收系统的openid："+obj.OtherPlayerOpenid);
+            cc.log("xt_send-游戏类型为："+obj.game_type);
             OtherPlayerOpenid = obj.OtherPlayerOpenid;
             game_type = obj.game_type;
             self.changeOtherPlayer(obj);

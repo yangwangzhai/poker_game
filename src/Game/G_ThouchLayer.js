@@ -109,7 +109,9 @@ var G_ThouchLayer = cc.Layer.extend({
 
     PlayerReadyCallback:function(){
         if(game_type==1){
-            this.beginCallback();
+            cc.log("现在是人机对战");
+            this.xt_beginCallback();
+            this._Playerready_menu.setVisible(false);
         }else{
             xhr.open("POST", base_url + "&m=send_player_ready");
             xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
@@ -410,7 +412,168 @@ var G_ThouchLayer = cc.Layer.extend({
         this._s_show_down_menu.setVisible(false);
     },
 
-    //发牌动作
+    //人机对战时发牌动作
+    xt_beginCallback:function(){
+        var effect_send = cc.audioEngine.playEffect(res.s_send,false);
+        var self=this;
+        //异步
+        xhr.open("POST", "index.php?c=poker&m=main");
+        //set Content-type "text/plain;charset=UTF-8" to post plain text
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.status >= 200 && xhr.status <= 207) {
+                    var response = eval("("+xhr.responseText+")");//接收服务器返回结果
+                    self.player_num =response ; //玩家、庄家的牌数赋值给全景变量
+                    cc.log("返回的数据："+self.player_num);
+                    //将结果和具体牌面发给对手
+/*                    socket.emit('sendPokerNum', {score:response.bets,winner:response.winner, openid:wx_info.openid, p_1:response.p_1,p_2:response.p_2, b_1:response.b_1,b_2:response.b_2,key:response.key,F_My_YD:response.Other_YD,F_Other_YD:response.My_YD,roomid:room_id});*/
+                    if(response.Code == 0){
+                        //给闲家发背面牌
+                        self.resultAreaHide();
+                        self.poker_value  = new cc.Sprite(res.s_bg_poker);
+                        self.poker_value.attr({
+                            x:self.WinSize.width/2,
+                            y:265
+                        });
+                        self.poker_value.setRotation(92);
+                        self.addChild( self.poker_value );
+                        var action1 = cc.moveTo(0.5,cc.p(185, self.WinSize.height/2));
+                        var callback = cc.callFunc(self.xt_showCallBack,self);
+                        var sequence = cc.sequence(action1,callback);
+                        self.poker_value.runAction(sequence);
+                        self.s_show_downArea.setVisible(true);
+                        //给庄家发背面牌
+                        cc.log("给对手发牌");
+                        self.poker_value2  = new cc.Sprite(res.s_bg_poker);
+                        self.poker_value2.attr({
+                            x:self.WinSize.width/2,
+                            y:265
+                        });
+                        self.poker_value2.setScale(0.6,0.6);//设置精灵的缩放比例
+                        self.poker_value2.setRotation(90);
+                        self.addChild( self.poker_value2 );
+                        var action2 = cc.moveTo(0.5,cc.p(400, self.WinSize.height/2));
+                        var action2 = cc.moveTo(0.5,cc.p(400, self.WinSize.height/2));
+                        //var action3 = cc.scaleTo(1,0.6);
+                        var sequence2 = cc.sequence(action2);
+                        self.poker_value2.runAction(sequence2);
+                        //玩家翻牌
+                        self.scheduleOnce(function(){
+                            var p1 = self.player_num.p_1;
+                            var p2 = self.player_num.p_2;
+                            var player_poker = new cc.Sprite('#'+p1+'_'+p2+'.png');
+                            player_poker.attr({
+                                x : self.poker_value.width/2,
+                                y : self.poker_value.height/2
+                            });
+                            self.poker_value.addChild(player_poker);
+                            //self.resultAreaShow();//显示“翻牌”按钮
+
+                            //自动翻牌
+                            var b1 = self.player_num.b_1;
+                            var b2 = self.player_num.b_2;
+                            var baker_poker = new cc.Sprite('#'+b1+'_'+b2+'.png');
+                            baker_poker.attr({
+                                x :  self.poker_value2.width/2,
+                                y :  self.poker_value2.height/2
+                            });
+                            self.poker_value2.addChild(baker_poker);
+
+                        },0.5);
+
+                    }else{
+                        alert(response.Msg);
+                    }
+                }else {
+                    alert('网络故障，请稍后再试试~');
+                }
+            }
+        };
+        var params = "openid="+wx_info.openid+"&gamekey="+wx_info.gamekey+"&bet_num="+this.bet_on_obj.total+"&otherplayeropenid="+OtherPlayerOpenid+"&game_type="+1;
+        xhr.send(params);//发送下注信息到服务器
+    },
+
+    xt_showCallBack:function(){
+        //判断谁赢
+        if(this.player_num.winner=='baker'){
+            var effect_baker_win = cc.audioEngine.playEffect(res.s_baker_win,false);
+            this.xt_bankerWin();
+        }else{
+            var effect_player_win = cc.audioEngine.playEffect(res.s_player_win,false);
+            this.xt_playerWin();
+        }
+        this.s_show_downArea.setVisible(false);
+    },
+
+    xt_bankerWin:function(){
+        //押注图标从闲家移动到庄家
+        this.playerChipsTemp  = new cc.Sprite(res.s_chips);
+        this.playerChipsTemp.attr({
+            x:this.playerChipsTemp.height/2+113,
+            y:this.WinSize.height-this.playerChipsTemp.width/2-16
+        });
+        this.playerChipsTemp.setScale(0.5,0.5);
+        this.playerChipsTemp.setRotation(90);
+        this.addChild( this.playerChipsTemp );
+
+        var callback1 = cc.callFunc(this.xt_bakerFadeOut,this);
+        var action1 = cc.moveTo(1,cc.p(450, 300));
+        var callback2 = cc.callFunc(this.xt_bakerFadeOut2,this);
+        var action2 = cc.fadeOut(1);
+        var sequence = cc.sequence(callback1,action1,callback2,action2);
+        this.playerChipsTemp.runAction(sequence);
+    },
+
+    xt_bakerFadeOut:function(){
+        this.s_chipsArea.setVisible(false);
+        this.show_xz.setVisible(false);
+        this.my_YD = this.player_num.My_YD;   //更新我的龙币值
+        this.UI_YD = this.player_num.My_YD;   //更新我的龙币值
+        BG_Object._mybean.setString(this.my_YD);  //显示最新的龙币值
+        cc.log("庄家最新龙币值："+this.player_num.Other_YD);
+        BG_Object.scoreLabel2.setString(this.player_num.Other_YD);  //显示对方最新的龙币值
+        //this.other_show_xz.setString(0);  //对方下注值归零
+    },
+
+    xt_bakerFadeOut2:function(){
+        this._ready_menu.setVisible(true);
+    },
+
+    xt_playerWin:function(){
+        //押注图标从庄家移动到闲家
+        this.playerChips  = new cc.Sprite(res.s_chips);
+        this.playerChips.attr({
+            x:450,
+            y:300
+        });
+        this.playerChips.setRotation(90);
+        this.addChild( this.playerChips );
+        var action1 = cc.moveTo(1,cc.p(this.playerChips.height/2+113, this.WinSize.height-this.playerChips.width/2-16));
+        var callback1 = cc.callFunc(this.xt_playerAdd,this);   //龙币加
+        var action2 = cc.fadeOut(0.5);
+        var callback2 = cc.callFunc(this.xt_playerFadeOut,this);
+        var sequence = cc.sequence(action1,callback1,action2,callback2);
+        this.playerChips.runAction(sequence);
+    },
+
+    xt_playerAdd:function(){
+        this.show_xz.setString(0); //下注值归零
+        this.my_YD = this.player_num.My_YD;   //更新我的龙币值
+        this.UI_YD = this.player_num.My_YD;   //更新我的龙币值
+        BG_Object._mybean.setString(this.my_YD);  //显示最新的龙币值
+        cc.log("庄家最新龙币值："+this.player_num.Other_YD);
+        BG_Object.scoreLabel2.setString(this.player_num.Other_YD);  //显示对方最新的龙币值
+    },
+
+    xt_playerFadeOut:function(){
+        this.s_chipsArea.setVisible(false);
+        this.show_xz.setVisible(false);
+        this._ready_menu.setVisible(true);
+    },
+
+
+    //人人对战发牌动作
     beginCallback:function(){
         var effect_send = cc.audioEngine.playEffect(res.s_send,false);
         var self=this;
