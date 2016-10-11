@@ -13,11 +13,12 @@ var PlayerType = null;
 var OtherPlayerOpenid = null;
 var room_id = null;
 var game_type = null;
+
 var G_BackGroundLayer = cc.Layer.extend({
     sprite:null,
     _Avatar : null,
+
     ctor:function () {
-        //////////////////////////////
         // 1. super init first
         this._super();
         BG_Object = this;

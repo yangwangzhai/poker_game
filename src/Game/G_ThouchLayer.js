@@ -1,7 +1,7 @@
 /**
  * Created by lkl on 2016/8/12.
  */
-
+//var  FAIL_UI_SIZE = cc.size(292, 277);
 var G_ThouchLayer = cc.Layer.extend({
     sprite: null,
     curr_selected_OBJ: null,//当前选中的押号按钮
@@ -17,6 +17,19 @@ var G_ThouchLayer = cc.Layer.extend({
     bgmusic_flag:null,
     MusicSet:null,
     EffectsSet:null,
+
+    //等待连接玩家
+    activate : false,
+    notifySprite :null,
+    replaySprite :null,
+    win : false,
+    tipText : null,
+    winPanel : null,
+    zzLayer : null,
+    listener : null,
+    maxTime: 300,
+    firstReturn: true,
+
 
     ctor: function () {
         // 1. super init first
@@ -87,10 +100,70 @@ var G_ThouchLayer = cc.Layer.extend({
 
         this.initPlayAgainBtn();//再玩一局按钮
 
+        if(!OtherPlayerOpenid){
+            this._super(cc.color(10,10,10,100),640,960);
+            this.zzLayer = new cc.LayerColor(cc.color(10,10,10,100));
+            //this.maxTime = 30;
+            //var size = cc.winSize;
+            //var self = this;
+            this.winPanel = new cc.Sprite(res.s_tip2);
+            this.winPanel.x = (cc.winSize.width )/2 ;
+            this.winPanel.anchorY = 0.5;
+            this.winPanel.y = cc.winSize.height/2;
+            this.winPanel.setRotation(90);
+            this.addChild(this.winPanel,5);
+            this.addChild( this.zzLayer,1);
+
+            this.tipText = "正在连接玩家";
+            var w = this.winPanel.width, h = this.winPanel.height;
+            var label = new cc.LabelTTF(this.tipText, "宋体", 36);
+            label.x = w/2;
+            label.y = h/2;
+            label.textAlign = cc.LabelTTF.TEXT_ALIGNMENT_CENTER;
+            label.color = cc.color(249,233,87);
+            this.winPanel.addChild(label);
+
+            //使得下层的点击事情无效
+            this.listener = cc.EventListener.create({
+                event: cc.EventListener.TOUCH_ONE_BY_ONE,
+                swallowTouches: true,
+                onTouchBegan: function (touch, event) {
+                    return true;
+                },
+                onTouchEnded: function (touch, event) {
+                }
+            });
+            cc.eventManager.addListener(this.listener, this.zzLayer);
+            this.schedule(this.countDown,1);
+        }
+
         this.schedule(this.chooseBaker, 1 ,10, 1);    //定时函数，每1秒执行一次chooseBaker函数
 
         return true;
     },
+
+    countDown:function(){
+        //this.maxTime --;
+        cc.log(OtherPlayerOpenid);
+        if(OtherPlayerOpenid){
+            this.removeChild(this.winPanel);
+            this.removeChild(this.zzLayer);
+            this.unschedule(this.countDown);
+            //cc.eventManager.removeListener(this.listener);
+        }
+    },
+
+    /*onExit : function () {
+        cc.log("退出");
+        this._super();
+        this.activate = false;
+        this.removeChild(this.winPanel);
+        this.removeChild(this.zzLayer);
+        cc.eventManager.removeListener(this.listener);
+        this.getParent().isFirstReturn = true;//设置为
+        return false;
+    },*/
+
 
     //玩家准备按钮
     initPlayerReadyBtn:function(){
@@ -276,34 +349,40 @@ var G_ThouchLayer = cc.Layer.extend({
     },
     //投注之后回调函数：依次累加每次投注的值
     betCallBack: function (sender){
+        var self = this;
         var effect_ya = cc.audioEngine.playEffect(res.s_ya,false);
         cc.log(this.bet_on_obj.total);
         if(this.checkYD(this.bet_on_obj.total+sender.bet_num)){
-            this.show_xz.setVisible(true);
-            this._Playerready_menu.setVisible(true);
-            this.s_chipsArea.setVisible(true);
-            this.bet_on_obj.total += sender.bet_num;    //累加每次投注的值
-            this.show_xz.setString(this.bet_on_obj.total); //设置文本框中的文本
-            this.UI_YD -= sender.bet_num;
-            BG_Object._mybean.setString(this.UI_YD); //设置文本框中的文本
-
-            xhr.open("POST", base_url + "&m=save_result");
+            xhr.open("POST", base_url + "&m=compare");
             xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status <= 207)) {
-                    var httpStatus = xhr.statusText;
-                    var responseObj = {sum: 0, game_id: 0, status: 0};
                     responseObj = eval('(' + xhr.responseText + ')');
-                    socket.emit('savescroce', {score:responseObj.score, openid:wx_info.openid, key:responseObj.key ,roomid:room_id});
+                    if(responseObj.com_result){
+                        self.show_xz.setVisible(true);
+                        self._Playerready_menu.setVisible(true);
+                        self.s_chipsArea.setVisible(true);
+                        self.bet_on_obj.total += sender.bet_num;    //累加每次投注的值
+                        self.show_xz.setString(self.bet_on_obj.total); //设置文本框中的文本
+                        self.UI_YD -= sender.bet_num;
+                        BG_Object._mybean.setString(self.UI_YD); //设置文本框中的文本
+
+                        socket.emit('savescroce', {score:responseObj.score, openid:wx_info.openid, key:responseObj.key ,roomid:room_id});
+                    }else{
+                        var tipUI = new TipUI("庄家龙币不足！");
+                        self.addChild(tipUI,100);
+                    }
                 }
             };
-            var data = this.postData2(this.bet_on_obj.total);//转换格式
-            xhr.send(data);
+            var data = this.bet_on_obj.total+sender.bet_num;
+            var params = "openid="+wx_info.openid+"&gamekey="+wx_info.gamekey+"&score="+data+"&other_opendid="+OtherPlayerOpenid+"&game_type="+game_type;
+            xhr.send(params);
         }else{
             var tipUI = new TipUI("龙币不足！");
             this.addChild(tipUI,100);
         }
     },
+
 
     //已押注的图标
     initChipsArea: function(){
@@ -590,7 +669,10 @@ var G_ThouchLayer = cc.Layer.extend({
                     socket.emit('sendPokerNum', {score:response.bets,winner:response.winner, openid:wx_info.openid, p_1:response.p_1,p_2:response.p_2, b_1:response.b_1,b_2:response.b_2,key:response.key,F_My_YD:response.Other_YD,F_Other_YD:response.My_YD,roomid:room_id});
                     if(response.Code == 0){
                         //给闲家发背面牌
-                        self.resultAreaHide();
+                        //self.resultAreaHide();
+                        //发牌前，先隐藏“开始”按钮，“下注”按钮
+                        self._start_menu.setVisible(false);
+                        self._bet_menu.setVisible(false);
                         self.poker_value  = new cc.Sprite(res.s_bg_poker);
                         self.poker_value.attr({
                             x:self.WinSize.width/2,
@@ -874,7 +956,7 @@ var G_ThouchLayer = cc.Layer.extend({
             var effect_player_win = cc.audioEngine.playEffect(res.s_player_win,false);
             this.otherplayerWin();
         }
-        this.s_show_downArea.setVisible(false);
+        this.s_other_show_downArea.setVisible(false);
     },
 
     otherplayerWin:function(){

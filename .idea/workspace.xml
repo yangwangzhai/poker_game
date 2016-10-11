@@ -4,6 +4,7 @@
     <list default="true" id="7ad1c88f-f8d1-4443-857b-5bf35fc4a7d2" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Game/G_BackGroundLayer.js" afterPath="$PROJECT_DIR$/src/Game/G_BackGroundLayer.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Game/G_ThouchLayer.js" afterPath="$PROJECT_DIR$/src/Game/G_ThouchLayer.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/TipScene.js" afterPath="$PROJECT_DIR$/src/TipScene.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/controllers/poker.php" afterPath="$PROJECT_DIR$/application/controllers/poker.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -30,21 +31,17 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="poker.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="poker.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/controllers/poker.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3994253" vertical-offset="4069" max-vertical-offset="17687">
-              <caret line="189" column="84" selection-start-line="189" selection-start-column="84" selection-end-line="189" selection-end-column="84" />
+            <state vertical-scroll-proportion="-6.1875" vertical-offset="17489" max-vertical-offset="18354">
+              <caret line="769" column="24" selection-start-line="769" selection-start-column="24" selection-end-line="769" selection-end-column="24" />
               <folding>
-                <marker date="1476094401760" expanded="true" signature="4991:8280" placeholder="..." />
-                <marker date="1476094401760" expanded="true" signature="5411:8280" placeholder="..." />
-                <marker date="1476094401760" expanded="true" signature="9517:11956" placeholder="..." />
-                <marker date="1476094401760" expanded="true" signature="9639:11956" placeholder="..." />
-                <marker date="1476094401760" expanded="true" signature="10986:11956" placeholder="..." />
-                <marker date="1476094401760" expanded="true" signature="11062:11956" placeholder="..." />
-                <marker date="1476094401760" expanded="true" signature="11138:11956" placeholder="..." />
-                <marker date="1476094401760" expanded="true" signature="22455:22497" placeholder="update zy_ga..." />
-                <marker date="1476094401760" expanded="true" signature="22579:22693" placeholder="update zy_ga..." />
+                <marker date="1476169203319" expanded="true" signature="22411:22453" placeholder="update zy_ga..." />
+                <marker date="1476169203319" expanded="true" signature="22535:22649" placeholder="update zy_ga..." />
+                <marker date="1476169203319" expanded="true" signature="24361:24382" placeholder="select Total..." />
+                <marker date="1476169203319" expanded="true" signature="24361:24383" placeholder="select Total..." />
+                <marker date="1476169203319" expanded="true" signature="24361:24418" placeholder="select Total..." />
               </folding>
             </state>
           </provider>
@@ -53,7 +50,7 @@
       <file leaf-file-name="poker.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/views/poker.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0" vertical-offset="529" max-vertical-offset="1656">
+            <state vertical-scroll-proportion="0.0" vertical-offset="529" max-vertical-offset="1610">
               <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
               <folding />
             </state>
@@ -83,18 +80,28 @@
       <file leaf-file-name="G_BackGroundLayer.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Game/G_BackGroundLayer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1112" max-vertical-offset="4922">
-              <caret line="66" column="32" selection-start-line="66" selection-start-column="32" selection-end-line="66" selection-end-column="32" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1265" max-vertical-offset="4945">
+              <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="G_ThouchLayer.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="G_ThouchLayer.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Game/G_ThouchLayer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="14260" max-vertical-offset="22149">
-              <caret line="456" column="66" selection-start-line="456" selection-start-column="66" selection-end-line="456" selection-end-column="66" />
+            <state vertical-scroll-proportion="0.77202797" vertical-offset="2898" max-vertical-offset="24081">
+              <caret line="150" column="44" selection-start-line="150" selection-start-column="44" selection-end-line="150" selection-end-column="44" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TipScene.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/TipScene.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1549" max-vertical-offset="2415">
+              <caret line="81" column="22" selection-start-line="81" selection-start-column="13" selection-end-line="81" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -104,7 +111,7 @@
         <entry file="file://$PROJECT_DIR$/src/resource.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="897">
-              <caret line="20" column="16" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="16" />
+              <caret line="14" column="40" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -126,12 +133,12 @@
         <option value="$PROJECT_DIR$/src/TwoPlayer.js" />
         <option value="$PROJECT_DIR$/application/views/poker.php" />
         <option value="$PROJECT_DIR$/main.js" />
-        <option value="$PROJECT_DIR$/src/TipScene.js" />
         <option value="$PROJECT_DIR$/src/resource.js" />
         <option value="$PROJECT_DIR$/project.json" />
-        <option value="$PROJECT_DIR$/src/Game/G_ThouchLayer.js" />
-        <option value="$PROJECT_DIR$/src/Game/G_BackGroundLayer.js" />
         <option value="$PROJECT_DIR$/application/controllers/poker.php" />
+        <option value="$PROJECT_DIR$/src/TipScene.js" />
+        <option value="$PROJECT_DIR$/src/Game/G_BackGroundLayer.js" />
+        <option value="$PROJECT_DIR$/src/Game/G_ThouchLayer.js" />
       </list>
     </option>
   </component>
@@ -243,9 +250,6 @@
       <BehatRunner />
       <method />
     </configuration>
-    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server">
-      <method />
-    </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
       <node-options />
       <gulpfile />
@@ -253,6 +257,9 @@
       <arguments />
       <pass-parent-envs>true</pass-parent-envs>
       <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server">
       <method />
     </configuration>
     <list size="0" />
@@ -280,19 +287,19 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16260745" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16475645" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -329,15 +336,11 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="4117" max-vertical-offset="15824">
           <caret line="179" column="166" selection-start-line="179" selection-start-column="166" selection-end-line="179" selection-end-column="166" />
           <folding>
-            <marker date="1476094401760" expanded="true" signature="4991:8280" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="5411:8280" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="9517:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="9639:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="10986:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="11062:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="11138:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="22455:22497" placeholder="update zy_ga..." />
-            <marker date="1476094401760" expanded="true" signature="22579:22693" placeholder="update zy_ga..." />
+            <marker date="1476169203319" expanded="true" signature="22411:22453" placeholder="update zy_ga..." />
+            <marker date="1476169203319" expanded="true" signature="22535:22649" placeholder="update zy_ga..." />
+            <marker date="1476169203319" expanded="true" signature="24361:24382" placeholder="select Total..." />
+            <marker date="1476169203319" expanded="true" signature="24361:24383" placeholder="select Total..." />
+            <marker date="1476169203319" expanded="true" signature="24361:24418" placeholder="select Total..." />
           </folding>
         </state>
       </provider>
@@ -394,12 +397,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="92" max-vertical-offset="6417">
           <caret line="4" column="44" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="44" />
-          <folding>
-            <marker date="1475048996531" expanded="true" signature="-1:-1" placeholder="select count..zy_baccarat_player..." />
-            <marker date="1475048996531" expanded="true" signature="-1:-1" placeholder="update zy_ba..." />
-            <marker date="1475048996531" expanded="true" signature="-1:-1" placeholder="select count..zy_baccarat_player..." />
-            <marker date="1475048996531" expanded="true" signature="-1:-1" placeholder="update zy_ba..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -416,15 +413,11 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="1127" max-vertical-offset="15617">
           <caret line="49" column="37" selection-start-line="49" selection-start-column="37" selection-end-line="49" selection-end-column="37" />
           <folding>
-            <marker date="1476094401760" expanded="true" signature="4991:8280" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="5411:8280" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="9517:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="9639:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="10986:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="11062:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="11138:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="22455:22497" placeholder="update zy_ga..." />
-            <marker date="1476094401760" expanded="true" signature="22579:22693" placeholder="update zy_ga..." />
+            <marker date="1476169203319" expanded="true" signature="22411:22453" placeholder="update zy_ga..." />
+            <marker date="1476169203319" expanded="true" signature="22535:22649" placeholder="update zy_ga..." />
+            <marker date="1476169203319" expanded="true" signature="24361:24382" placeholder="select Total..." />
+            <marker date="1476169203319" expanded="true" signature="24361:24383" placeholder="select Total..." />
+            <marker date="1476169203319" expanded="true" signature="24361:24418" placeholder="select Total..." />
           </folding>
         </state>
       </provider>
@@ -449,12 +442,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="920" max-vertical-offset="6417">
           <caret line="40" column="35" selection-start-line="40" selection-start-column="35" selection-end-line="40" selection-end-column="35" />
-          <folding>
-            <marker date="1475048996531" expanded="true" signature="-1:-1" placeholder="select count..zy_baccarat_player..." />
-            <marker date="1475048996531" expanded="true" signature="-1:-1" placeholder="update zy_ba..." />
-            <marker date="1475048996531" expanded="true" signature="-1:-1" placeholder="select count..zy_baccarat_player..." />
-            <marker date="1475048996531" expanded="true" signature="-1:-1" placeholder="update zy_ba..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -501,12 +488,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6371">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1475048996531" expanded="true" signature="-1:-1" placeholder="select count..zy_baccarat_player..." />
-            <marker date="1475048996531" expanded="true" signature="-1:-1" placeholder="update zy_ba..." />
-            <marker date="1475048996531" expanded="true" signature="-1:-1" placeholder="select count..zy_baccarat_player..." />
-            <marker date="1475048996531" expanded="true" signature="-1:-1" placeholder="update zy_ba..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -562,15 +543,11 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="15318">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1476094401760" expanded="true" signature="4991:8280" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="5411:8280" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="9517:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="9639:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="10986:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="11062:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="11138:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="22455:22497" placeholder="update zy_ga..." />
-            <marker date="1476094401760" expanded="true" signature="22579:22693" placeholder="update zy_ga..." />
+            <marker date="1476169203319" expanded="true" signature="22411:22453" placeholder="update zy_ga..." />
+            <marker date="1476169203319" expanded="true" signature="22535:22649" placeholder="update zy_ga..." />
+            <marker date="1476169203319" expanded="true" signature="24361:24382" placeholder="select Total..." />
+            <marker date="1476169203319" expanded="true" signature="24361:24383" placeholder="select Total..." />
+            <marker date="1476169203319" expanded="true" signature="24361:24418" placeholder="select Total..." />
           </folding>
         </state>
       </provider>
@@ -674,12 +651,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="92" max-vertical-offset="6417">
           <caret line="4" column="44" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="44" />
-          <folding>
-            <marker date="1475048996531" expanded="true" signature="-1:-1" placeholder="select count..zy_baccarat_player..." />
-            <marker date="1475048996531" expanded="true" signature="-1:-1" placeholder="update zy_ba..." />
-            <marker date="1475048996531" expanded="true" signature="-1:-1" placeholder="select count..zy_baccarat_player..." />
-            <marker date="1475048996531" expanded="true" signature="-1:-1" placeholder="update zy_ba..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -703,7 +674,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.75" vertical-offset="0" max-vertical-offset="690">
           <caret line="8" column="20" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -711,22 +681,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.03159341" vertical-offset="1978" max-vertical-offset="4807">
           <caret line="86" column="0" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/TipScene.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31868133" vertical-offset="343" max-vertical-offset="2691">
-          <caret line="25" column="50" selection-start-line="25" selection-start-column="50" selection-end-line="25" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/resource.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="897">
-          <caret line="20" column="16" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="16" />
           <folding />
         </state>
       </provider>
@@ -739,37 +693,49 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Game/G_ThouchLayer.js">
+    <entry file="file://$PROJECT_DIR$/src/resource.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="14743" max-vertical-offset="22149">
-          <caret line="456" column="66" selection-start-line="456" selection-start-column="66" selection-end-line="456" selection-end-column="66" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Game/G_BackGroundLayer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1112" max-vertical-offset="4922">
-          <caret line="66" column="32" selection-start-line="66" selection-start-column="32" selection-end-line="66" selection-end-column="32" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="897">
+          <caret line="14" column="40" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/application/controllers/poker.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3994253" vertical-offset="4069" max-vertical-offset="17687">
-          <caret line="189" column="84" selection-start-line="189" selection-start-column="84" selection-end-line="189" selection-end-column="84" />
+        <state vertical-scroll-proportion="-6.1875" vertical-offset="17489" max-vertical-offset="18354">
+          <caret line="769" column="24" selection-start-line="769" selection-start-column="24" selection-end-line="769" selection-end-column="24" />
           <folding>
-            <marker date="1476094401760" expanded="true" signature="4991:8280" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="5411:8280" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="9517:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="9639:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="10986:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="11062:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="11138:11956" placeholder="..." />
-            <marker date="1476094401760" expanded="true" signature="22455:22497" placeholder="update zy_ga..." />
-            <marker date="1476094401760" expanded="true" signature="22579:22693" placeholder="update zy_ga..." />
+            <marker date="1476169203319" expanded="true" signature="22411:22453" placeholder="update zy_ga..." />
+            <marker date="1476169203319" expanded="true" signature="22535:22649" placeholder="update zy_ga..." />
+            <marker date="1476169203319" expanded="true" signature="24361:24382" placeholder="select Total..." />
+            <marker date="1476169203319" expanded="true" signature="24361:24383" placeholder="select Total..." />
+            <marker date="1476169203319" expanded="true" signature="24361:24418" placeholder="select Total..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Game/G_BackGroundLayer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1541" max-vertical-offset="4922">
+          <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TipScene.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1549" max-vertical-offset="2415">
+          <caret line="81" column="22" selection-start-line="81" selection-start-column="13" selection-end-line="81" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Game/G_ThouchLayer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.77202797" vertical-offset="2898" max-vertical-offset="24081">
+          <caret line="150" column="44" selection-start-line="150" selection-start-column="44" selection-end-line="150" selection-end-column="44" />
+          <folding />
         </state>
       </provider>
     </entry>

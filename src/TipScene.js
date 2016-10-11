@@ -21,8 +21,6 @@ var TipUI = cc.Layer.extend({
         this.tipText = tip;
         var size = cc.winSize;
         var self = this;
-
-
         this.winPanel = new cc.Sprite(res.s_tip2);
         this.winPanel.x = (cc.winSize.width )/2 ;
         this.winPanel.anchorY = 0.5;
@@ -43,18 +41,12 @@ var TipUI = cc.Layer.extend({
         });
         cc.eventManager.addListener(this.listener, this.zzLayer);
         this.schedule(this.countDown,1);
-
-
     },
     onEnter : function () {
         this._super();
         var self = this;
         var miny = cc.winSize.height/2 - FAIL_UI_SIZE.height / 2;
-
-
-
         this.winPanel.removeAllChildren();
-
         var w = this.winPanel.width, h = this.winPanel.height;
         var label = new cc.LabelTTF(this.tipText, "宋体", 36);
         label.x = w/2;
@@ -64,9 +56,6 @@ var TipUI = cc.Layer.extend({
      //   label.width = w;
         label.color = cc.color(249,233,87);
         this.winPanel.addChild(label);
-
-
-
         var OKbtn = new cc.MenuItemImage(
             res.s_ok_btn,
             res.s_ok_btn,
@@ -82,7 +71,6 @@ var TipUI = cc.Layer.extend({
         menu.x=0;
         menu.y=0;
         this.winPanel.addChild(menu);
-
         this.activate = true;
     },
     onExit : function () {
@@ -93,12 +81,12 @@ var TipUI = cc.Layer.extend({
         cc.eventManager.removeListener(this.listener);
         this.getParent().isFirstReturn = true;//设置为
         return false;
-    },countDown:function(){
+    },
+    countDown:function(){
         this.maxTime --;
         if(this.maxTime == 0){
             this.onExit();
         }
-
     }
 });
 

@@ -169,20 +169,20 @@ class poker extends CI_Controller
                         $winner = "player";
                     }
                     //增加或者扣除龙币
+                    //赢的要被抽水
+                    if(0<$sum&&$sum<10){
+                        $rent = 1;
+                    }elseif(10<=$sum&&$sum<30){
+                        $rent = 2;
+                    }elseif(30<=$sum&&$sum<50){
+                        $rent = 5;
+                    }elseif(50<=$sum&&$sum<100){
+                        $rent = 10;
+                    }else{
+                        $rent = 20;
+                    }
+                    $win_sum = $sum-$rent;
                     if($game_type){
-                        //赢的要被抽水
-                        if(0<$sum&&$sum<10){
-                            $rent = 1;
-                        }elseif(10<=$sum&&$sum<30){
-                            $rent = 2;
-                        }elseif(30<=$sum&&$sum<50){
-                            $rent = 5;
-                        }elseif(50<=$sum&&$sum<100){
-                            $rent = 10;
-                        }else{
-                            $rent = 20;
-                        }
-                        $win_sum = $sum-$rent;
                         if($winner=="baker"){
                             $Other_YD = $this->xt_addYD($other_openid,abs($win_sum)); //系统庄家赢，增加龙币
                             $My_YD = $this->subYD($openid,abs($sum)); //玩家家输，扣除龙币
@@ -192,11 +192,11 @@ class poker extends CI_Controller
                         }
                     }else{
                         if($winner=="baker"){
-                            $My_YD = $this->addYD($openid,abs($sum)); //庄家赢，增加龙币
+                            $My_YD = $this->addYD($openid,abs($win_sum)); //庄家赢，增加龙币
                             $Other_YD = $this->subYD($other_openid,abs($sum)); //玩家输，扣除龙币
                         }else{
+                            $Other_YD = $this->addYD($other_openid,abs($win_sum)); //玩家赢，增加龙币
                             $My_YD = $this->subYD($openid,abs($sum)); //庄家输，扣除龙币
-                            $Other_YD = $this->addYD($other_openid,abs($sum)); //玩家赢，增加龙币
                         }
                     }
 
@@ -757,6 +757,35 @@ class poker extends CI_Controller
         echo json_encode($data);
     }
 
+    //比较玩家下注值是否比庄家现有的龙币大
+    function compare(){
+        $openid = $this->input->post('openid');
+        $other_openid = $this->input->post('other_opendid');
+        $score = $this->input->post('score');
+        $game_type = $this->input->post('game_type');
+        $data['score'] = $score;
+        $data['key'] = md5($openid . $score . $this->nodekey);
+
+        //数据库查询当前龙币
+        if($game_type==1){
+            $table = "zy_xt_player";
+        }else{
+            $table = "zy_player";
+        }
+        $sql = "select TotalGold from $table WHERE Openid='$other_openid'";
+        $data['sql'] = $sql;
+        $data['game_type'] = $game_type;
+        $query = $this->db->query($sql);
+        $total_gold = $query->row_array();
+        $data['TotalGold'] = $total_gold['TotalGold'];
+        if($score<=$total_gold['TotalGold']){
+            $data['com_result'] = 1;
+        }else{
+            $data['com_result'] = 0;
+        }
+
+        echo json_encode($data);
+    }
 
 
 }
